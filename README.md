@@ -1,6 +1,9 @@
 # burcrehberi
 
-A new Flutter project.
+My first Flutter project.
+
+![](https://i.hizliresim.com/dgq5iix.png)
+![](https://i.hizliresim.com/bpdd71j.png)
 
 ## Getting Started
 
