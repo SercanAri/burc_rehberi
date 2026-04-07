@@ -97,7 +97,7 @@ a {
 h1,
 h2,
 p {
-  margin-top: 0;
+  margin: 0 0;
 }
 
 h1 {
@@ -218,6 +218,7 @@ footer {
 }
 
 .zodiac-card {
+  display: block;
   min-height: 260px;
   padding: 24px;
   text-align: left;
@@ -279,6 +280,19 @@ footer {
   font-weight: 800;
 }
 
+.detail-hero {
+  padding: 28px clamp(20px, 5vw, 72px) 12px;
+}
+
+.detail-main {
+  padding-top: 42px;
+}
+
+.detail-page-title {
+  margin-bottom: 18px;
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+}
+
 .detail-panel {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) minmax(260px, 0.7fr);
@@ -286,6 +300,10 @@ footer {
   margin-top: 44px;
   padding: clamp(24px, 4vw, 44px);
   align-items: center;
+}
+
+.detail-panel-page {
+  margin-top: 0;
 }
 
 .detail-image-wrap {
@@ -331,6 +349,37 @@ footer {
   background: rgba(255, 255, 255, 0.07);
 }
 
+.daily-section {
+  padding-top: 72px;
+}
+
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.daily-card {
+  min-height: 190px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 24px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.daily-card h3 {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 1.25rem;
+}
+
+.daily-card p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 footer {
   padding: 28px clamp(20px, 5vw, 72px) 42px;
   text-align: center;
@@ -339,7 +388,8 @@ footer {
 @media (max-width: 980px) {
   .intro,
   .zodiac-grid,
-  .detail-panel {
+  .detail-panel,
+  .daily-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -360,7 +410,8 @@ footer {
 
   .intro,
   .zodiac-grid,
-  .detail-panel {
+  .detail-panel,
+  .daily-grid {
     grid-template-columns: 1fr;
   }
 

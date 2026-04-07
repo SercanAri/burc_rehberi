@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burç Detayı | AstroRehber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="detail-hero">
+    <nav class="navbar" aria-label="Ana navigasyon">
+      <a class="logo" href="index.html">AstroRehber</a>
+      <a class="nav-link" href="index.html#burclar">Tüm Burçlar</a>
+    </nav>
+  </header>
+
+  <main class="detail-main">
+    <section class="detail-panel detail-panel-page" aria-label="Burç detay sayfası">
+      <div class="detail-image-wrap">
+        <img id="detailImage" src="" alt="">
+      </div>
+      <div>
+        <p class="eyebrow" id="updatedDate">Güncel burç yorumu</p>
+        <h1 class="detail-page-title" id="detailTitle">Burç detayı</h1>
+        <p class="detail-date" id="detailDate"></p>
+        <p id="detailDescription"></p>
+      </div>
+      <ul id="detailList"></ul>
+    </section>
+
+    <section class="daily-section" aria-label="Güncel yorumlar">
+      <div class="section-heading">
+        <p class="eyebrow">Bugünün yorumu</p>
+        <h2 id="dailyHeading">Güncel bilgiler</h2>
+      </div>
+
+      <div class="daily-grid" id="dailyGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AstroRehber - Eğlence ve tanıtım amaçlı günlük burç rehberi.</p>
+  </footer>
+
+  <script src="zodiac-data.js"></script>
+  <script src="burc-detay.js"></script>
+</body>
+</html>
