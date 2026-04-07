@@ -111,9 +111,39 @@ const zodiacSigns = [
 
 const grid = document.querySelector("#zodiacGrid");
 const filters = document.querySelectorAll(".filter");
+const detailImage = document.querySelector("#detailImage");
 const detailTitle = document.querySelector("#detailTitle");
+const detailDate = document.querySelector("#detailDate");
 const detailDescription = document.querySelector("#detailDescription");
 const detailList = document.querySelector("#detailList");
+
+function createZodiacImage(sign) {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="${sign.name} burcu">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop stop-color="#ffb86b"/>
+          <stop offset="1" stop-color="#a78bfa"/>
+        </linearGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="7" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <rect width="320" height="220" rx="34" fill="#241128"/>
+      <circle cx="70" cy="48" r="58" fill="#ffb86b" opacity=".20"/>
+      <circle cx="260" cy="170" r="84" fill="#a78bfa" opacity=".20"/>
+      <path d="M52 168 C104 118 142 196 197 124 S258 60 286 90" fill="none" stroke="url(#bg)" stroke-width="3" opacity=".55"/>
+      <text x="160" y="112" text-anchor="middle" dominant-baseline="middle" font-size="92" font-family="Arial, sans-serif" fill="url(#bg)" filter="url(#glow)">${sign.symbol}</text>
+      <text x="160" y="178" text-anchor="middle" font-size="25" font-weight="700" font-family="Arial, sans-serif" fill="#fff8f1">${sign.name}</text>
+    </svg>
+  `;
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
 
 function renderCards(filter = "all") {
   const visibleSigns = filter === "all"
@@ -122,13 +152,16 @@ function renderCards(filter = "all") {
 
   grid.innerHTML = visibleSigns.map((sign) => `
     <button class="zodiac-card" type="button" data-name="${sign.name}">
-      <span class="zodiac-symbol">${sign.symbol}</span>
+      <span class="zodiac-image-wrap">
+        <img src="${createZodiacImage(sign)}" alt="${sign.name} burcu görseli">
+      </span>
       <div class="zodiac-meta">
         <span>${sign.dates}</span>
         <span>${sign.element}</span>
       </div>
       <h3>${sign.name}</h3>
       <p>${sign.summary}</p>
+      <span class="card-action">Detayları gör</span>
     </button>
   `).join("");
 }
@@ -141,7 +174,10 @@ function showDetails(signName) {
   }
 
   detailTitle.textContent = `${sign.symbol} ${sign.name}`;
+  detailDate.textContent = `${sign.name} burcu tarihleri: ${sign.dates}`;
   detailDescription.textContent = `${sign.summary} Motto: "${sign.motto}"`;
+  detailImage.src = createZodiacImage(sign);
+  detailImage.alt = `${sign.name} burcu görseli`;
   detailList.innerHTML = sign.strengths
     .map((strength) => `<li>${strength}</li>`)
     .join("");

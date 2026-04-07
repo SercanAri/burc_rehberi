@@ -223,6 +223,7 @@ footer {
   text-align: left;
   color: var(--text);
   cursor: pointer;
+  font: inherit;
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -234,17 +235,23 @@ footer {
   outline: none;
 }
 
-.zodiac-symbol {
-  display: inline-grid;
+.zodiac-image-wrap {
+  display: grid;
   place-items: center;
-  width: 58px;
-  height: 58px;
-  margin-bottom: 24px;
-  border-radius: 20px;
-  color: #241128;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  font-size: 1.8rem;
-  font-weight: 800;
+  min-height: 150px;
+  margin-bottom: 22px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.24), transparent 32%),
+    rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.zodiac-image-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .zodiac-meta {
@@ -261,12 +268,52 @@ footer {
   font-size: 1.5rem;
 }
 
+.card-action {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 18px;
+  border-radius: 999px;
+  padding: 11px 15px;
+  color: #25122b;
+  background: var(--accent);
+  font-weight: 800;
+}
+
 .detail-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+  grid-template-columns: 220px minmax(0, 1fr) minmax(260px, 0.7fr);
   gap: 28px;
   margin-top: 44px;
   padding: clamp(24px, 4vw, 44px);
+  align-items: center;
+}
+
+.detail-image-wrap {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.24), transparent 32%),
+    rgba(255, 255, 255, 0.07);
+}
+
+.detail-image-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.detail-date {
+  display: inline-flex;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 184, 107, 0.45);
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: var(--accent);
+  background: rgba(255, 184, 107, 0.1);
+  font-weight: 800;
 }
 
 .detail-panel ul {
@@ -295,6 +342,10 @@ footer {
   .detail-panel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .detail-panel ul {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 680px) {
@@ -310,6 +361,10 @@ footer {
   .intro,
   .zodiac-grid,
   .detail-panel {
-    grid-template-columns: 1fr;
+    grid-template-kolumns: 1fr;
+  }
+
+  .detail-panel ul {
+    grid-column: auto;
   }
 }
