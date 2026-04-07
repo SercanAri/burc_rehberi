@@ -14,6 +14,36 @@
 </head>
 <body class="natal-page">
   <div class="space-backdrop" aria-hidden="true"></div>
+  <div class="batman-sky" aria-hidden="true">
+    <div class="flying-batman" id="flyingBatman">
+      <svg viewBox="0 0 240 128" focusable="false">
+        <defs>
+          <linearGradient id="capeSheen" x1="12" x2="228" y1="24" y2="112" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#050611"/>
+            <stop offset="0.5" stop-color="#151b34"/>
+            <stop offset="1" stop-color="#050611"/>
+          </linearGradient>
+          <filter id="batmanGlow" x="-35%" y="-45%" width="170%" height="190%">
+            <feGaussianBlur stdDeviation="3.8" result="blur"/>
+            <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.98 0 1 0 0 0.72 0 0 1 0 0.32 0 0 0 0.45 0" result="warmGlow"/>
+            <feMerge>
+              <feMergeNode in="warmGlow"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <g class="batman-silhouette" filter="url(#batmanGlow)">
+          <path class="bat-cape bat-cape-left" d="M119 42C88 19 51 24 13 55C35 53 45 65 32 87C58 73 79 78 88 112C96 83 106 61 119 42Z"/>
+          <path class="bat-cape bat-cape-right" d="M121 42C152 19 189 24 227 55C205 53 195 65 208 87C182 73 161 78 152 112C144 83 134 61 121 42Z"/>
+          <path class="bat-shoulders" d="M79 67C96 53 108 49 120 49C132 49 144 53 161 67C145 71 134 78 120 92C106 78 95 71 79 67Z"/>
+          <path class="bat-body" d="M103 42C106 29 112 23 120 23C128 23 134 29 137 42L133 79C131 94 126 105 120 112C114 105 109 94 107 79L103 42Z"/>
+          <path class="bat-cowl" d="M103 38L109 15L116 30C119 29 121 29 124 30L131 15L137 38C141 51 134 61 120 61C106 61 99 51 103 38Z"/>
+          <path class="bat-eye bat-eye-left" d="M110 43L117 45L111 47Z"/>
+          <path class="bat-eye bat-eye-right" d="M130 43L123 45L129 47Z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
 
   <header class="chart-hero">
     <nav class="navbar" aria-label="Ana navigasyon">

@@ -7,6 +7,8 @@ const chartWheel = document.querySelector("#chartWheel");
 const summaryGrid = document.querySelector("#summaryGrid");
 const summaryText = document.querySelector("#summaryText");
 const analysisGrid = document.querySelector("#analysisGrid");
+const flyingBatman = document.querySelector("#flyingBatman");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const elementOrder = ["Ateş", "Toprak", "Hava", "Su"];
 const planetGlyphs = {
@@ -25,6 +27,122 @@ const elementTone = {
   "Hava": "iletişim, öğrenme ve sosyal akış güçlü",
   "Su": "sezgi, duygu ve içsel bağlar derin"
 };
+
+let flyingBatmanAnimation;
+let flyingBatmanTimer;
+
+function randomBetween(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function getFlyingBatmanRoute() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const heroWidth = flyingBatman.offsetWidth || 132;
+  const fromLeft = Math.random() > 0.5;
+  const direction = fromLeft ? 1 : -1;
+  const safeTop = Math.max(64, height * 0.1);
+  const safeBottom = Math.max(safeTop + 160, height * 0.74);
+
+  return {
+    startX: fromLeft ? -heroWidth * 1.8 : width + heroWidth * 1.8,
+    endX: fromLeft ? width + heroWidth * 1.8 : -heroWidth * 1.8,
+    startY: randomBetween(safeTop, safeBottom),
+    midX: randomBetween(width * 0.18, width * 0.82),
+    midY: randomBetween(safeTop * 0.7, Math.max(safeTop + 80, height * 0.52)),
+    endY: randomBetween(safeTop, safeBottom),
+    direction,
+    scale: randomBetween(0.72, 1.18),
+    duration: randomBetween(9500, 16500),
+    delay: randomBetween(250, 900)
+  };
+}
+
+function formatBatmanTransform(x, y, rotate, direction, scale) {
+  return `translate3d(${x}px, ${y}px, 0) rotate(${rotate}deg) scale(${direction * scale}, ${scale})`;
+}
+
+function scheduleFlyingBatman(delay = 900) {
+  window.clearTimeout(flyingBatmanTimer);
+
+  if (!flyingBatman || reducedMotionQuery.matches) {
+    return;
+  }
+
+  flyingBatmanTimer = window.setTimeout(animateFlyingBatman, delay);
+}
+
+function animateFlyingBatman() {
+  if (!flyingBatman || reducedMotionQuery.matches) {
+    return;
+  }
+
+  if (flyingBatmanAnimation) {
+    flyingBatmanAnimation.cancel();
+  }
+
+  const route = getFlyingBatmanRoute();
+
+  flyingBatmanAnimation = flyingBatman.animate([
+    {
+      transform: formatBatmanTransform(route.startX, route.startY, route.direction * -6, route.direction, route.scale),
+      opacity: 0,
+      offset: 0
+    },
+    {
+      transform: formatBatmanTransform(route.startX + route.direction * 120, route.startY - 18, route.direction * 4, route.direction, route.scale),
+      opacity: 0.76,
+      offset: 0.14
+    },
+    {
+      transform: formatBatmanTransform(route.midX, route.midY, route.direction * -8, route.direction, route.scale * 1.08),
+      opacity: 0.9,
+      offset: 0.55
+    },
+    {
+      transform: formatBatmanTransform(route.endX - route.direction * 120, route.endY + 12, route.direction * 5, route.direction, route.scale),
+      opacity: 0.72,
+      offset: 0.86
+    },
+    {
+      transform: formatBatmanTransform(route.endX, route.endY, route.direction * -6, route.direction, route.scale * 0.94),
+      opacity: 0,
+      offset: 1
+    }
+  ], {
+    duration: route.duration,
+    easing: "cubic-bezier(0.42, 0, 0.18, 1)",
+    fill: "both"
+  });
+
+  flyingBatmanAnimation.onfinish = () => scheduleFlyingBatman(route.delay);
+}
+
+function setupFlyingBatman() {
+  if (!flyingBatman || reducedMotionQuery.matches) {
+    return;
+  }
+
+  scheduleFlyingBatman(randomBetween(700, 1800));
+}
+
+function handleMotionPreferenceChange(event) {
+  if (event.matches) {
+    window.clearTimeout(flyingBatmanTimer);
+    flyingBatmanAnimation?.cancel();
+    return;
+  }
+
+  setupFlyingBatman();
+}
+
+if (reducedMotionQuery.addEventListener) {
+  reducedMotionQuery.addEventListener("change", handleMotionPreferenceChange);
+} else if (reducedMotionQuery.addListener) {
+  reducedMotionQuery.addListener(handleMotionPreferenceChange);
+}
+
+window.addEventListener("load", setupFlyingBatman);
 
 function findSign(slug) {
   return zodiacSigns.find((sign) => sign.slug === slug) || zodiacSigns[0];

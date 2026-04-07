@@ -51,6 +51,63 @@
   z-index: 2;
 }
 
+.batman-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flying-batman {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(82px, 8vw, 138px);
+  opacity: 0;
+  transform: translate3d(-180px, 28vh, 0);
+  transform-origin: 50% 50%;
+  filter:
+    drop-shadow(0 0 16px rgba(255, 184, 107, 0.2))
+    drop-shadow(0 0 28px rgba(167, 139, 250, 0.16));
+  will-change: transform, opacity;
+}
+
+.flying-batman svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.bat-cape {
+  fill: url(#capeSheen);
+  stroke: rgba(255, 248, 241, 0.12);
+  stroke-width: 1;
+}
+
+.bat-cape-left {
+  transform-origin: 119px 46px;
+  animation: bat-cape-left-flutter 1.7s ease-in-out infinite alternate;
+}
+
+.bat-cape-right {
+  transform-origin: 121px 46px;
+  animation: bat-cape-right-flutter 1.7s ease-in-out infinite alternate;
+}
+
+.bat-shoulders,
+.bat-body,
+.bat-cowl {
+  fill: #050611;
+  stroke: rgba(255, 248, 241, 0.16);
+  stroke-width: 1;
+}
+
+.bat-eye {
+  fill: rgba(255, 184, 107, 0.78);
+}
+
 .chart-hero {
   min-height: 78vh;
   padding: 28px clamp(20px, 5vw, 72px) 90px;
@@ -443,6 +500,32 @@
 @keyframes drift-stars {
   to {
     background-position: 96px 96px, 195px 229px, 332px 254px, 334px 446px;
+  }
+}
+
+@keyframes bat-cape-left-flutter {
+  from {
+    transform: rotate(-1.5deg) scaleY(0.98);
+  }
+
+  to {
+    transform: rotate(2.4deg) scaleY(1.04);
+  }
+}
+
+@keyframes bat-cape-right-flutter {
+  from {
+    transform: rotate(1.5deg) scaleY(0.98);
+  }
+
+  to {
+    transform: rotate(-2.4deg) scaleY(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flying-batman {
+    display: none;
   }
 }
 
