@@ -1,0 +1,315 @@
+:root {
+  --bg: #12091f;
+  --bg-soft: #1f1232;
+  --card: rgba(255, 255, 255, 0.09);
+  --card-strong: rgba(255, 255, 255, 0.15);
+  --text: #fff8f1;
+  --muted: #c9bdda;
+  --accent: #ffb86b;
+  --accent-2: #a78bfa;
+  --border: rgba(255, 255, 255, 0.18);
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 184, 107, 0.22), transparent 34rem),
+    radial-gradient(circle at 80% 8%, rgba(167, 139, 250, 0.25), transparent 30rem),
+    var(--bg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero {
+  min-height: 78vh;
+  padding: 28px clamp(20px, 5vw, 72px) 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 16% -10% auto auto;
+  width: 420px;
+  height: 420px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent);
+  pointer-events: none;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.nav-link,
+.cta {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.hero-content {
+  max-width: 860px;
+  margin-top: clamp(80px, 13vw, 160px);
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 24px;
+  font-size: clamp(2.7rem, 7vw, 6.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.08em;
+}
+
+h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  letter-spacing: -0.05em;
+}
+
+.hero-text {
+  max-width: 680px;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.8;
+}
+
+.cta {
+  display: inline-flex;
+  margin-top: 14px;
+  background: linear-gradient(135deg, var(--accent), #ff7a90);
+  color: #241128;
+  font-weight: 800;
+}
+
+main {
+  padding: 0 clamp(20px, 5vw, 72px) 52px;
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: -42px;
+  position: relative;
+  z-index: 2;
+}
+
+.intro article,
+.zodiac-card,
+.detail-panel {
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.intro article {
+  padding: 26px;
+}
+
+.intro span {
+  display: inline-flex;
+  margin-bottom: 32px;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.intro h2 {
+  font-size: 1.35rem;
+}
+
+.intro p,
+.zodiac-card p,
+.detail-panel p,
+footer {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.zodiac-section {
+  padding-top: 96px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.filter {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 11px 16px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.filter:hover,
+.filter.active {
+  color: #25122b;
+  background: var(--accent);
+}
+
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.zodiac-card {
+  min-height: 260px;
+  padding: 24px;
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.zodiac-card:hover,
+.zodiac-card:focus-visible {
+  transform: translateY(-6px);
+  background: var(--card-strong);
+  border-color: rgba(255, 184, 107, 0.7);
+  outline: none;
+}
+
+.zodiac-symbol {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 24px;
+  border-radius: 20px;
+  color: #241128;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.zodiac-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.zodiac-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+}
+
+.detail-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+  gap: 28px;
+  margin-top: 44px;
+  padding: clamp(24px, 4vw, 44px);
+}
+
+.detail-panel ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detail-panel li {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+footer {
+  padding: 28px clamp(20px, 5vw, 72px) 42px;
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .intro,
+  .zodiac-grid,
+  .detail-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .intro,
+  .zodiac-grid,
+  .detail-panel {
+    grid-template-columns: 1fr;
+  }
+}
