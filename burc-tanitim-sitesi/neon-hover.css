@@ -5,6 +5,12 @@
 }
 
 .zodiac-card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glide-x: 0px;
+  --glide-y: 0px;
   position: relative;
   isolation: isolate;
   overflow: visible;
@@ -12,25 +18,38 @@
   will-change: transform, box-shadow;
 }
 
+.zodiac-card > * {
+  position: relative;
+  z-index: 2;
+}
+
 .zodiac-card::before {
   content: "";
   position: absolute;
   inset: -3px;
-  z-index: 1;
+  z-index: 3;
   border-radius: 31px;
   padding: 3px;
-  background: conic-gradient(
-    from var(--neon-angle, 0deg),
-    transparent 0deg,
-    transparent 35deg,
-    rgba(34, 211, 238, 0.22) 58deg,
-    rgba(167, 139, 250, 0.9) 78deg,
-    rgba(255, 248, 241, 1) 96deg,
-    rgba(255, 184, 107, 1) 116deg,
-    rgba(255, 122, 144, 0.62) 138deg,
-    transparent 170deg,
-    transparent 360deg
-  );
+  background:
+    radial-gradient(
+      circle at var(--spot-x) var(--spot-y),
+      rgba(255, 248, 241, 1) 0 7%,
+      rgba(255, 184, 107, 0.96) 8% 15%,
+      rgba(167, 139, 250, 0.82) 16% 24%,
+      transparent 34%
+    ),
+    conic-gradient(
+      from var(--neon-angle, 0deg),
+      transparent 0deg,
+      transparent 35deg,
+      rgba(34, 211, 238, 0.22) 58deg,
+      rgba(167, 139, 250, 0.9) 78deg,
+      rgba(255, 248, 241, 1) 96deg,
+      rgba(255, 184, 107, 1) 116deg,
+      rgba(255, 122, 144, 0.62) 138deg,
+      transparent 170deg,
+      transparent 360deg
+    );
   opacity: 0;
   filter:
     drop-shadow(0 0 12px rgba(255, 184, 107, 0.8))
@@ -50,18 +69,34 @@
 .zodiac-card::after {
   content: "";
   position: absolute;
-  inset: 10px;
-  z-index: -1;
-  border-radius: 26px;
+  inset: 0;
+  z-index: 1;
+  border-radius: 28px;
   background:
-    radial-gradient(circle at 22% 18%, rgba(255, 184, 107, 0.24), transparent 34%),
-    radial-gradient(circle at 82% 28%, rgba(167, 139, 250, 0.24), transparent 32%),
-    radial-gradient(circle at 50% 88%, rgba(34, 211, 238, 0.18), transparent 38%);
-  filter: blur(22px);
+    radial-gradient(
+      circle at var(--spot-x) var(--spot-y),
+      rgba(255, 248, 241, 0.34) 0,
+      rgba(255, 184, 107, 0.24) 14%,
+      rgba(167, 139, 250, 0.18) 27%,
+      rgba(34, 211, 238, 0.1) 38%,
+      transparent 54%
+    ),
+    radial-gradient(
+      circle at calc(var(--spot-x) + 12%) calc(var(--spot-y) + 10%),
+      rgba(255, 122, 144, 0.16),
+      transparent 36%
+    );
+  box-shadow:
+    inset 0 0 34px rgba(255, 248, 241, 0.1),
+    0 0 34px rgba(167, 139, 250, 0.18);
   opacity: 0;
-  transform: scale(0.92);
+  transform: scale(0.98);
+  mix-blend-mode: screen;
   pointer-events: none;
-  transition: opacity 0.28s ease, transform 0.28s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background-position 0.2s ease;
 }
 
 .zodiac-card:hover::before,
@@ -73,13 +108,18 @@
 .zodiac-card:hover::after,
 .zodiac-card:focus-visible::after {
   opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1);
 }
 
 .zodiac-card:hover,
 .zodiac-card:focus-visible {
   z-index: 2;
-  transform: translateY(-10px) scale(1.025);
+  transform:
+    perspective(900px)
+    translateY(-10px)
+    rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y))
+    scale(1.025);
   box-shadow:
     0 30px 90px rgba(0, 0, 0, 0.46),
     0 0 36px rgba(255, 184, 107, 0.2),
@@ -98,7 +138,10 @@
 
 .zodiac-card:hover .zodiac-image-wrap,
 .zodiac-card:focus-visible .zodiac-image-wrap {
-  transform: translateZ(18px) scale(1.02);
+  transform:
+    translateZ(18px)
+    translate(var(--glide-x), var(--glide-y))
+    scale(1.02);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
     0 18px 42px rgba(0, 0, 0, 0.28);
