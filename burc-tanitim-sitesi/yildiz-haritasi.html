@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Doğum bilgilerinle kişisel yıldız haritan için hızlı ve estetik bir ön astroloji analizi oluştur.">
+  <title>Yıldız Haritası Hesaplama | AstroRehber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="yildiz-haritasi.css">
+</head>
+<body class="natal-page">
+  <div class="space-backdrop" aria-hidden="true"></div>
+
+  <header class="chart-hero">
+    <nav class="navbar" aria-label="Ana navigasyon">
+      <a class="logo" href="index.html">AstroRehber</a>
+      <div class="nav-actions">
+        <a class="nav-link" href="index.html#burclar">Burçlar</a>
+        <a class="nav-link nav-link-active" href="yildiz-haritasi.html">Yıldız Haritası</a>
+      </div>
+    </nav>
+
+    <section class="chart-hero-content">
+      <p class="eyebrow">Natal chart aracı</p>
+      <h1>Kendi Yıldız Haritanı Keşfet</h1>
+      <p class="hero-text">
+        Doğduğun anın gökyüzü sana ne anlatıyor? Doğum tarihini, saatini ve yerini gir,
+        dakikalar içinde kişisel ön analizini gör.
+      </p>
+      <div class="hero-actions">
+        <a class="cta" href="#chartTool">Haritanı Oluştur</a>
+        <a class="ghost-cta" href="#chartTool">Ücretsiz Analiz</a>
+      </div>
+    </section>
+  </header>
+
+  <main class="chart-main">
+    <section id="chartTool" class="chart-tool" aria-label="Yıldız haritası hesaplama formu">
+      <div class="tool-copy">
+        <p class="eyebrow">Hızlı ve güvenli</p>
+        <h2>Doğum bilgilerini gir, haritanı görselleştirelim.</h2>
+        <p>
+          Bu araç GitHub Pages üzerinde çalışan bir ön analiz deneyimidir. Verileriniz
+          tarayıcınızda işlenir, saklanmaz ve herhangi bir sunucuya gönderilmez.
+        </p>
+        <div class="trust-grid" aria-label="Güven notları">
+          <article>
+            <strong>Veri saklama yok</strong>
+            <span>Form bilgileri cihazınızdan çıkmaz.</span>
+          </article>
+          <article>
+            <strong>Mobil uyumlu</strong>
+            <span>Tek kolon, hızlı ve sade giriş.</span>
+          </article>
+          <article>
+            <strong>API hazır yapı</strong>
+            <span>Swiss Ephemeris entegrasyonuna uygun akış.</span>
+          </article>
+        </div>
+      </div>
+
+      <form class="chart-form" id="chartForm">
+        <label>
+          Doğum Tarihi
+          <input type="date" id="birthDate" required>
+        </label>
+
+        <label>
+          Doğum Saati
+          <span class="field-hint" title="Doğum saatini bilmiyorsan yaklaşık bir saat girebilirsin. Yükselen ve evler saat bilgisine duyarlıdır.">Opsiyonel ama önerilir</span>
+          <input type="time" id="birthTime" inputmode="numeric" placeholder="HH:mm">
+        </label>
+
+        <label>
+          Doğum Yeri
+          <input type="text" id="birthPlace" list="birthPlaces" placeholder="İstanbul, Türkiye" autocomplete="off" required>
+        </label>
+
+        <datalist id="birthPlaces">
+          <option value="İstanbul, Türkiye"></option>
+          <option value="Ankara, Türkiye"></option>
+          <option value="İzmir, Türkiye"></option>
+          <option value="Antalya, Türkiye"></option>
+          <option value="Bursa, Türkiye"></option>
+          <option value="Berlin, Almanya"></option>
+          <option value="Londra, Birleşik Krallık"></option>
+          <option value="New York, ABD"></option>
+        </datalist>
+
+        <p class="form-note">Doğum saati bilinmiyorsa yaklaşık gir. Hatasız yükselen için saat ve şehir bilgisi önemlidir.</p>
+        <button class="cta chart-submit" type="submit">Haritanı Oluştur</button>
+      </form>
+    </section>
+
+    <section class="loading-card" id="loadingCard" aria-live="polite" hidden>
+      <span class="loading-orbit"></span>
+      <p>Gökyüzü analiz ediliyor...</p>
+    </section>
+
+    <section class="chart-results" id="chartResults" aria-label="Yıldız haritası sonuçları" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Kişisel ön analiz</p>
+          <h2 id="resultTitle">Haritan hazır</h2>
+        </div>
+        <span class="result-badge" id="accuracyBadge">Ön analiz</span>
+      </div>
+
+      <div class="result-layout">
+        <article class="chart-wheel-card">
+          <div class="chart-wheel" id="chartWheel" aria-label="Dairesel doğum haritası görselleştirmesi"></div>
+          <p class="chart-source">Arka plan görseli: <a href="https://science.nasa.gov/image-detail/amf-pia12110/" target="_blank" rel="noreferrer">NASA Hubble Deep Field</a>, Image Credit: NASA.</p>
+        </article>
+
+        <article class="summary-panel">
+          <h3>Özet Analiz</h3>
+          <div class="summary-grid" id="summaryGrid"></div>
+          <p id="summaryText"></p>
+        </article>
+      </div>
+
+      <div class="analysis-grid" id="analysisGrid"></div>
+
+      <section class="premium-entry" aria-label="Ek özellikler">
+        <article>
+          <span>Yakında</span>
+          <h3>Partner Uyumu</h3>
+          <p>İkinci kişi ekleyerek synastry uyum analizi.</p>
+        </article>
+        <article>
+          <span>Premium</span>
+          <h3>PDF Rapor</h3>
+          <p>Haritanı indirilebilir detaylı rapor olarak alma.</p>
+        </article>
+        <article>
+          <span>Günlük</span>
+          <h3>Haritana Göre Yorum</h3>
+          <p>Doğum haritana göre kişisel günlük mini yorum.</p>
+        </article>
+      </section>
+    </section>
+
+    <section class="seo-panel" aria-label="Yıldız haritası bilgi alanı">
+      <p class="eyebrow">Bilgi merkezi</p>
+      <h2>Doğum haritası hesaplama nedir?</h2>
+      <p>
+        Doğum haritası, doğduğun tarih, saat ve konuma göre Güneş, Ay, yükselen ve
+        gezegen yerleşimlerini yorumlamaya yardımcı olan astroloji haritasıdır.
+        Hassas sonuçlar için zaman dilimi ve konum hesaplaması kritik önemdedir.
+      </p>
+      <div class="keyword-list" aria-label="SEO anahtar kelimeleri">
+        <span>doğum haritası hesaplama</span>
+        <span>yıldız haritası çıkarma</span>
+        <span>natal chart nedir</span>
+        <span>ücretsiz astroloji analizi</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AstroRehber - Eğlence ve tanıtım amaçlı astroloji aracı. Hassas hesaplama için backend astroloji API entegrasyonu gerekir.</p>
+  </footer>
+
+  <script src="zodiac-data.js"></script>
+  <script src="yildiz-haritasi.js"></script>
+</body>
+</html>

@@ -69,6 +69,13 @@ a {
   letter-spacing: -0.04em;
 }
 
+.nav-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .nav-link,
 .cta {
   border: 1px solid var(--border);
@@ -76,6 +83,12 @@ a {
   padding: 12px 18px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
+}
+
+.nav-link-active {
+  color: #241128;
+  background: var(--accent);
+  font-weight: 800;
 }
 
 .hero-content {
@@ -406,6 +419,10 @@ footer {
   .navbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .nav-actions {
+    justify-content: flex-start;
   }
 
   .intro,
