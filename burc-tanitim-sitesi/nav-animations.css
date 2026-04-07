@@ -44,18 +44,23 @@
 }
 
 .nav-starchart::before {
-  content: "✦ ✧ ✦";
-  inset: -14px -16px auto auto;
-  color: #fff8f1;
-  font-size: 0.78rem;
-  letter-spacing: 0.35rem;
-  opacity: 0.72;
-  text-shadow:
-    -28px 16px 0 rgba(255, 184, 107, 0.78),
-    -4px 31px 0 rgba(167, 139, 250, 0.72),
-    28px 18px 0 rgba(34, 211, 238, 0.72);
-  transform: translateY(1px);
-  animation: nav-star-idle 4.8s ease-in-out infinite;
+  content: "";
+  inset: -20px -22px;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 2%, rgba(255, 248, 241, 0.95) 0 2px, transparent 3px),
+    radial-gradient(circle at 96% 50%, rgba(34, 211, 238, 0.86) 0 2px, transparent 3px),
+    radial-gradient(circle at 50% 98%, rgba(255, 184, 107, 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 4% 50%, rgba(167, 139, 250, 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 18% 18%, rgba(255, 248, 241, 0.72) 0 1.5px, transparent 2.6px),
+    radial-gradient(circle at 82% 18%, rgba(255, 184, 107, 0.76) 0 1.5px, transparent 2.6px),
+    radial-gradient(circle at 82% 82%, rgba(167, 139, 250, 0.74) 0 1.5px, transparent 2.6px),
+    radial-gradient(circle at 18% 82%, rgba(34, 211, 238, 0.72) 0 1.5px, transparent 2.6px);
+  filter: drop-shadow(0 0 8px rgba(255, 248, 241, 0.74));
+  transform: scale(0.84) rotate(0deg);
+  transition: opacity 0.22s ease, transform 0.22s ease;
 }
 
 .nav-starchart::after {
@@ -70,7 +75,7 @@
 
 .nav-starchart:hover::before,
 .nav-starchart:focus-visible::before {
-  animation: nav-star-burst 1.2s ease-in-out infinite;
+  animation: nav-star-orbit 2.4s linear infinite;
   opacity: 1;
 }
 
@@ -118,27 +123,9 @@
   animation: nav-zodiac-ring 1.6s linear infinite;
 }
 
-@keyframes nav-star-idle {
-  0%,
-  100% {
-    opacity: 0.54;
-    transform: translateY(1px) scale(0.94);
-  }
-
-  50% {
-    opacity: 0.88;
-    transform: translateY(-1px) scale(1);
-  }
-}
-
-@keyframes nav-star-burst {
-  0%,
-  100% {
-    transform: translateY(1px) rotate(-4deg) scale(1);
-  }
-
-  50% {
-    transform: translateY(-5px) rotate(5deg) scale(1.12);
+@keyframes nav-star-orbit {
+  to {
+    transform: scale(1) rotate(360deg);
   }
 }
 
