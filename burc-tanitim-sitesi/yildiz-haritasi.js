@@ -38,11 +38,11 @@ function randomBetween(min, max) {
 function getFlyingBatmanRoute() {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const heroWidth = flyingBatman.offsetWidth || 132;
+  const heroWidth = flyingBatman.offsetWidth || 190;
   const fromLeft = Math.random() > 0.5;
   const direction = fromLeft ? 1 : -1;
   const safeTop = Math.max(64, height * 0.1);
-  const safeBottom = Math.max(safeTop + 160, height * 0.74);
+  const safeBottom = Math.max(safeTop + 120, height * 0.58);
 
   return {
     startX: fromLeft ? -heroWidth * 1.8 : width + heroWidth * 1.8,
@@ -53,7 +53,7 @@ function getFlyingBatmanRoute() {
     endY: randomBetween(safeTop, safeBottom),
     direction,
     scale: randomBetween(0.72, 1.18),
-    duration: randomBetween(9500, 16500),
+    duration: randomBetween(7600, 12800),
     delay: randomBetween(250, 900)
   };
 }
@@ -91,17 +91,17 @@ function animateFlyingBatman() {
     },
     {
       transform: formatBatmanTransform(route.startX + route.direction * 120, route.startY - 18, route.direction * 4, route.direction, route.scale),
-      opacity: 0.76,
+      opacity: 0.86,
       offset: 0.14
     },
     {
       transform: formatBatmanTransform(route.midX, route.midY, route.direction * -8, route.direction, route.scale * 1.08),
-      opacity: 0.9,
+      opacity: 0.96,
       offset: 0.55
     },
     {
       transform: formatBatmanTransform(route.endX - route.direction * 120, route.endY + 12, route.direction * 5, route.direction, route.scale),
-      opacity: 0.72,
+      opacity: 0.82,
       offset: 0.86
     },
     {
@@ -123,7 +123,7 @@ function setupFlyingBatman() {
     return;
   }
 
-  scheduleFlyingBatman(randomBetween(700, 1800));
+  scheduleFlyingBatman(randomBetween(250, 900));
 }
 
 function handleMotionPreferenceChange(event) {
