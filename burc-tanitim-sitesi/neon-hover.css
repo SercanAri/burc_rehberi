@@ -1,0 +1,53 @@
+@property --neon-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.zodiac-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.zodiac-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 1;
+  border-radius: 30px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--neon-angle, 0deg),
+    transparent 0deg,
+    transparent 72deg,
+    rgba(255, 184, 107, 0.25) 92deg,
+    rgba(255, 248, 241, 0.95) 110deg,
+    rgba(167, 139, 250, 0.95) 128deg,
+    rgba(34, 211, 238, 0.45) 146deg,
+    transparent 170deg,
+    transparent 360deg
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.zodiac-card:hover::before,
+.zodiac-card:focus-visible::before {
+  opacity: 1;
+  animation: neon-border-spin 1.8s linear infinite;
+}
+
+@keyframes neon-border-spin {
+  to {
+    --neon-angle: 360deg;
+  }
+}
