@@ -361,7 +361,7 @@ footer {
   .intro,
   .zodiac-grid,
   .detail-panel {
-    grid-template-kolumns: 1fr;
+    grid-template-columns: 1fr;
   }
 
   .detail-panel ul {
