@@ -11,6 +11,12 @@
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
 }
 
+@property --neon-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -97,7 +103,7 @@ a {
 h1,
 h2,
 p {
-  margin: 0 0;
+  margin-top: 0;
 }
 
 h1 {
@@ -219,6 +225,8 @@ footer {
 
 .zodiac-card {
   display: block;
+  position: relative;
+  isolation: isolate;
   min-height: 260px;
   padding: 24px;
   text-align: left;
@@ -226,6 +234,37 @@ footer {
   cursor: pointer;
   font: inherit;
   transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.zodiac-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 1;
+  border-radius: 30px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--neon-angle, 0deg),
+    transparent 0deg,
+    transparent 72deg,
+    rgba(255, 184, 107, 0.25) 92deg,
+    rgba(255, 248, 241, 0.95) 110deg,
+    rgba(167, 139, 250, 0.95) 128deg,
+    rgba(34, 211, 238, 0.45) 146deg,
+    transparent 170deg,
+    transparent 360deg
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }
 
 .zodiac-card:hover,
@@ -236,16 +275,27 @@ footer {
   outline: none;
 }
 
+.zodiac-card:hover::before,
+.zodiac-card:focus-visible::before {
+  opacity: 1;
+  animation: neon-border-spin 1.8s linear infinite;
+}
+
+@keyframes neon-border-spin {
+  to {
+    --neon-angle: 360deg;
+  }
+}
+
 .zodiac-image-wrap {
   display: grid;
   place-items: center;
-  min-height: 150px;
+  min-height: 178px;
   margin-bottom: 22px;
   border: 1px solid var(--border);
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.24), transparent 32%),
-    rgba(255, 255, 255, 0.07);
+  border-radius: 24ppx;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
   overflow: hidden;
 }
 
@@ -270,152 +320,4 @@ footer {
 }
 
 .card-action {
-  display: inline-flex;
-  justify-content: center;
-  margin-top: 18px;
-  border-radius: 999px;
-  padding: 11px 15px;
-  color: #25122b;
-  background: var(--accent);
-  font-weight: 800;
-}
-
-.detail-hero {
-  padding: 28px clamp(20px, 5vw, 72px) 12px;
-}
-
-.detail-main {
-  padding-top: 42px;
-}
-
-.detail-page-title {
-  margin-bottom: 18px;
-  font-size: clamp(2.6rem, 6vw, 5.2rem);
-}
-
-.detail-panel {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr) minmax(260px, 0.7fr);
-  gap: 28px;
-  margin-top: 44px;
-  padding: clamp(24px, 4vw, 44px);
-  align-items: center;
-}
-
-.detail-panel-page {
-  margin-top: 0;
-}
-
-.detail-image-wrap {
-  display: grid;
-  place-items: center;
-  min-height: 220px;
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.24), transparent 32%),
-    rgba(255, 255, 255, 0.07);
-}
-
-.detail-image-wrap img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.detail-date {
-  display: inline-flex;
-  margin-bottom: 16px;
-  border: 1px solid rgba(255, 184, 107, 0.45);
-  border-radius: 999px;
-  padding: 10px 14px;
-  color: var(--accent);
-  background: rgba(255, 184, 107, 0.1);
-  font-weight: 800;
-}
-
-.detail-panel ul {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.detail-panel li {
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.daily-section {
-  padding-top: 72px;
-}
-
-.daily-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.daily-card {
-  min-height: 190px;
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: 24px;
-  background: var(--card);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
-}
-
-.daily-card h3 {
-  margin: 0 0 12px;
-  color: var(--accent);
-  font-size: 1.25rem;
-}
-
-.daily-card p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-footer {
-  padding: 28px clamp(20px, 5vw, 72px) 42px;
-  text-align: center;
-}
-
-@media (max-width: 980px) {
-  .intro,
-  .zodiac-grid,
-  .detail-panel,
-  .daily-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .detail-panel ul {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 680px) {
-  .hero {
-    min-height: auto;
-  }
-
-  .navbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .intro,
-  .zodiac-grid,
-  .detail-panel,
-  .daily-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detail-panel ul {
-    grid-column: auto;
-  }
-}
+  display: inline-flepì(€©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•Èì(€µ…É¥¸µÑ½Àè€ÄáÁàì(€‰½É‘•ÈµÉ…‘¥ÕÌè€ääåÁàì(€Á…‘‘¥¹œè€ÄÅÁà€ÄÕÁàì(€½±½Èè€ŒÈÔÄÈÉˆì(€‰…­É½Õ¹èÙ…È ´µ…•¹Ğ¤ì(€™½¹Ğµİ•¥¡Ğè€àÀÀì)ô((¹‘•Ñ…¥°µ¡•É¼ì(€Á…‘‘¥¹œè€ÈáÁà±…µÀ ÈÁÁà°€ÕÙÜ°€ÜÉÁà¤€ÄÉÁàì)ô((¹‘•Ñ…¥°µµ…¥¸ì(€Á…‘‘¥¹œµÑ½Àè€ĞÉÁàì)ô((¹‘•Ñ…¥°µÁ…”µÑ¥Ñ±”ì(€µ…É¥¸µ‰½ÑÑ½´è€ÄáÁàì(€™½¹ĞµÍ¥é”è±…µÀ È¸ÙÉ•´°€ÙÙÜ°€Ô¸ÉÉ•´¤ì)ô((¹‘•Ñ…¥°µÁ…¹•°ì(€‘¥ÍÁ±…äèÉ¥ì(€É¥µÑ•µÁ±…Ñ”µ½±Õµ¹Ìè€ÈÈÁÁàµ¥¹µ…à À°€Å™È¤µ¥¹µ…à ÈØÁÁà°€À¸İ™È¤ì(€…Àè€ÈáÁàì(€µ…É¥¸µÑ½Àè€ĞÑÁàì(€Á…‘‘¥¹œè±…µÀ ÈÑÁà°€ÑÙÜ°€ĞÑÁà¤ì(€…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì)ô((¹‘•Ñ…¥°µÁ…¹•°µÁ…”ì(€µ…É¥¸µÑ½Àè€Àì)ô((¹‘•Ñ…¥°µ¥µ…”µİÉ…Àì(€‘¥ÍÁ±…äèÉ¥ì(€Á±…”µ¥Ñ•µÌè•¹Ñ•Èì(€µ¥¸µ¡•¥¡Ğè€ÈÈÁÁàì(€‰½É‘•Èè€ÅÁàÍ½±¥Ù…È ´µ‰½É‘•È¤ì(€‰½É‘•ÈµÉ…‘¥ÕÌè€ÈáÁàì(€‰…­É½Õ¹è(€€€É…‘¥…°µÉ…‘¥•¹Ğ¡¥É±”…Ğ€ÌÔ”€ÈÀ”°É‰„ ÈÔÔ°€ÈÔÔ°€ÈÔÔ°€À¸ÈĞ¤°ÑÉ…¹ÍÁ…É•¹Ğ€ÌÈ”¤°(€€€É‰„ ÈÔÔ°€ÈÔÔ°€ÈÔÔ°€À¸ÀÜ¤ì)ô((¹‘•Ñ…¥°µ¥µ…”µİÉ…À¥µœì(€‘¥ÍÁ±…äè‰±½¬ì(€İ¥‘Ñ è€ÄÀÀ”ì(€¡•¥¡Ğè…ÕÑ¼ì)ô((¹‘•Ñ…¥°µ‘…Ñ”ì(€‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì(€µ…É¥¸µ‰½ÑÑ½´è€ÄÙÁàì(€‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ÈÔÔ°€ÄàĞ°€ÄÀÜ°€À¸ĞÔ¤ì(€‰½É‘•ÈµÉ…‘¥ÕÌè€ääåÁàì(€Á…‘‘¥¹œè€ÄÁÁà€ÄÑÁàì(€½±½ÈèÙ…È ´µ…•¹Ğ¤ì(€‰…­É½Õ¹èÉ‰„ ÈÔÔ°€ÄàĞ°€ÄÀÜ°€À¸Ä¤ì(€™½¹Ğµİ•¥¡Ğè€àÀÀì)ô((¹‘•Ñ…¥°µÁ…¹•°Õ°ì(€‘¥ÍÁ±…äèÉ¥ì(€…Àè€ÄÉÁàì(€µ…É¥¸è€Àì(€Á…‘‘¥¹œè€Àì(€±¥ÍĞµÍÑå±”è¹½¹”ì)ô((¹‘•Ñ…¥°µÁ…¹•°±¤ì(€‰½É‘•Èè€ÅÁàÍ½±¥Ù…È ´µ‰½É‘•È¤ì(€‰½É‘•ÈµÉ…‘¥ÕÌè€ÄáÁàì(€Á…‘‘¥¹œè€ÄÑÁà€ÄÙÁàì(€‰…­É½Õ¹èÉ‰„ ÈÔÔ°€ÈÔÔ°€ÈÔÔ°€À¸ÀÜ¤ì)ô((¹‘…¥±äµÍ•Ñ¥½¸ì(€Á…‘‘¥¹œµÑ½Àè€ÜÉÁàì)ô((¹‘…¥±äµÉ¥ì(€‘¥ÍÁ±…äèÉ¥ì(€É¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ Ì°µ¥¹µ…à À°€Å™È¤¤ì(€…Àè€ÄáÁàì)ô((¹‘…¥±äµ…Éì(€µ¥¸µ¡•¥¡Ğè€ÄäÁÁàì(€‰½É‘•Èè€ÅÁàÍ½±¥Ù…È ´µ‰½É‘•È¤ì(€‰½É‘•ÈµÉ…‘¥ÕÌè€ÈáÁàì(€Á…‘‘¥¹œè€ÈÑÁàì(€‰…­É½Õ¹èÙ…È ´µ…É¤ì(€‰½àµÍ¡…‘½ÜèÙ…È ´µÍ¡…‘½Ü¤ì(€‰…­‘É½Àµ™¥±Ñ•Èè‰±ÕÈ ÄáÁà¤ì)ô((¹‘…¥±äµ…É Ìì(€µ…É¥¸è€À€À€ÄÉÁàì(€½±½ÈèÙ…È ´µ…•¹Ğ¤ì(€™½¹ĞµÍ¥é”è€Ä¸ÈÕÉ•´ì)ô((¹‘…¥±äµ…ÉÀì(€½±½ÈèÙ…È ´µµÕÑ•¤ì(€±¥¹”µ¡•¥¡Ğè€Ä¸Üì)ô()™½½Ñ•Èì(€Á…‘‘¥¹œè€ÈáÁà±…µÀ ÈÁÁà°€ÕÙÜ°€ÜÉÁà¤€ĞÉÁàì(€Ñ•áĞµ…±¥¸è•¹Ñ•Èì)ô()µ•‘¥„€¡µ…àµİ¥‘Ñ è€äàÁÁà¤ì(€€¹¥¹ÑÉ¼°(€€¹é½‘¥…ŒµÉ¥°(€€¹‘•Ñ…¥°µÁ…¹•°°(€€¹‘…¥±äµÉ¥ì(€€€É¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ È°µ¥¹µ…à À°€Å™È¤¤ì(€ô((€€¹‘•Ñ…¥°µÁ…¹•°Õ°ì(€€€É¥µ½±Õµ¸è€Ä€¼€´Äì(€ô)ô()µ•‘¥„€¡µ…àµİ¥‘Ñ è€ØàÁÁà¤ì(€€¹¡•É¼ì(€€€µ¥¸µ¡•¥¡Ğè…ÕÑ¼ì(€ô((€€¹¹…Ù‰…Èì(€€€…±¥¸µ¥Ñ•µÌè™±•àµÍÑ…ÉĞì(€€€™±•àµ‘¥É•Ñ¥½¸è½±Õµ¸ì(€ô((€€¹¥¹ÑÉ¼°(€€¹é½‘¥…ŒµÉ¥°(€€¹‘•Ñ…¥°µÁ…¹•°°(€€¹‘…¥±äµÉ¥ì(€€€É¥µÑ•µÁ±…Ñ”µ½±Õµ¹Ìè€Å™Èì(€ô((€€¹‘•Ñ…¥°µÁ…¹•°Õ°ì(€€€É¥µ½±Õµ¸è…ÕÑ¼ì(€ô)ô(
