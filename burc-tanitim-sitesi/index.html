@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burç Tanıtım Sitesi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <nav class="navbar" aria-label="Ana navigasyon">
+      <a class="logo" href="#">AstroRehber</a>
+      <a class="nav-link" href="#burclar">Burçları Keşfet</a>
+    </nav>
+
+    <section class="hero-content">
+      <p class="eyebrow">12 burç, 4 element, tek rehber</p>
+      <h1>Burcunu keşfet, karakterinin yıldız haritasına kısa bir yolculuk yap.</h1>
+      <p class="hero-text">
+        Koç'tan Balık'a tüm burçların tarih aralıklarını, elementlerini ve öne çıkan
+        özelliklerini sade ve modern bir sayfada incele.
+      </p>
+      <a class="cta" href="#burclar">Hemen Başla</a>
+    </section>
+  </header>
+
+  <main>
+    <section class="intro" aria-label="Site özeti">
+      <article>
+        <span>01</span>
+        <h2>Elementlere göre filtrele</h2>
+        <p>Ateş, toprak, hava ve su gruplarını tek tıkla ayır.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h2>Kısa tanıtımları oku</h2>
+        <p>Her burcun temel enerjisini hızlıca öğren.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h2>Detayları incele</h2>
+        <p>Kartlara tıklayıp güçlü yönleri ve mottoları gör.</p>
+      </article>
+    </section>
+
+    <section id="burclar" class="zodiac-section">
+      <div class="section-heading">
+        <p class="eyebrow">Burç kataloğu</p>
+        <h2>Yıldızların diliyle 12 karakter</h2>
+      </div>
+
+      <div class="filters" aria-label="Burç element filtreleri">
+        <button class="filter active" type="button" data-filter="all">Tümü</button>
+        <button class="filter" type="button" data-filter="Ateş">Ateş</button>
+        <button class="filter" type="button" data-filter="Toprak">Toprak</button>
+        <button class="filter" type="button" data-filter="Hava">Hava</button>
+        <button class="filter" type="button" data-filter="Su">Su</button>
+      </div>
+
+      <div class="zodiac-grid" id="zodiacGrid" aria-live="polite"></div>
+    </section>
+
+    <section class="detail-panel" id="detailPanel" aria-label="Seçilen burç detayı">
+      <div>
+        <p class="eyebrow">Seçilen burç</p>
+        <h2 id="detailTitle">Koç</h2>
+        <p id="detailDescription">
+          Kartlardan bir burç seçtiğinde burada daha detaylı bilgi görünür.
+        </p>
+      </div>
+      <ul id="detailList"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>AstroRehber - Eğlence ve tanıtım amaçlı burç rehberi.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
