@@ -85,12 +85,6 @@ a {
   backdrop-filter: blur(12px);
 }
 
-.nav-link-active {
-  color: #241128;
-  background: var(--accent);
-  font-weight: 800;
-}
-
 .hero-content {
   max-width: 860px;
   margin-top: clamp(80px, 13vw, 160px);
