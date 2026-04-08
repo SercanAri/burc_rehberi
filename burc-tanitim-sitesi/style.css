@@ -64,9 +64,47 @@ a {
 }
 
 .logo {
-  font-size: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.16rem;
   font-weight: 800;
   letter-spacing: -0.04em;
+}
+
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(18, 9, 31, 0.22));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 16px 34px rgba(6, 3, 15, 0.34);
+  backdrop-filter: blur(12px);
+}
+
+.logo-mark svg {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.logo-text {
+  position: relative;
+  color: #fff8f1;
+}
+
+.logo-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 216, 155, 0.72), rgba(167, 139, 250, 0));
 }
 
 .nav-actions {
@@ -125,6 +163,22 @@ h2 {
   color: var(--muted);
   font-size: clamp(1rem, 1.8vw, 1.25rem);
   line-height: 1.8;
+}
+
+[data-typing] {
+  will-change: contents;
+}
+
+[data-typing].is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 0.11em;
+  height: 0.95em;
+  margin-left: 0.12em;
+  vertical-align: -0.1em;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffcf9c, #a78bfa);
+  animation: typing-caret 0.7s steps(1) infinite;
 }
 
 .cta {
@@ -532,6 +586,18 @@ footer {
   text-align: center;
 }
 
+@keyframes typing-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 980px) {
   .intro,
   .zodiac-grid,
@@ -553,6 +619,16 @@ footer {
   .navbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+  }
+
+  .logo-mark svg {
+    width: 36px;
+    height: 36px;
   }
 
   .nav-actions {
