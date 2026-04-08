@@ -3,7 +3,7 @@ const selectedSlug = params.get("burc") || "koc";
 const sign = zodiacSigns.find((item) => item.slug === selectedSlug) || zodiacSigns[0];
 const reading = getDailyReading(sign);
 
-document.title = `${sign.name} Burcu Güncel Yorumu | AstroRehber`;
+document.title = `${sign.name} Burcu Güncel Yorumu | Astro`;
 document.querySelector("#detailImage").src = createZodiacImage(sign);
 document.querySelector("#detailImage").alt = `${sign.name} burcu görseli`;
 document.querySelector("#updatedDate").textContent = `Güncellendi: ${reading.date}`;
