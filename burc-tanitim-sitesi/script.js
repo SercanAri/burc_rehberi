@@ -1,28 +1,12 @@
 const grid = document.querySelector("#zodiacGrid");
 const filters = document.querySelectorAll(".filter");
+const cards = grid ? Array.from(grid.querySelectorAll(".zodiac-card")) : [];
 
-function renderCards(filter = "all") {
-  const visibleSigns = filter === "all"
-    ? zodiacSigns
-    : zodiacSigns.filter((sign) => sign.element === filter);
-
-  grid.innerHTML = visibleSigns.map((sign) => `
-    <a class="zodiac-card" href="burc.html?burc=${sign.slug}" aria-label="${sign.name} burcu detay sayfasına git">
-      <span class="zodiac-image-wrap" aria-hidden="true">
-        ${createZodiacVisualMarkup(sign)}
-      </span>
-      <div class="zodiac-meta">
-        <span>${sign.dates}</span>
-        <span>${sign.element}</span>
-      </div>
-      <h3>${sign.name}</h3>
-      <p>${sign.summary}</p>
-      <p class="zodiac-card-detail">${sign.cardDetail}</p>
-      <span class="card-action">Güncel yorumu aç</span>
-    </a>
-  `).join("");
-
-  bindCardMotion();
+function filterCards(filter = "all") {
+  cards.forEach((card) => {
+    const isVisible = filter === "all" || card.dataset.element === filter;
+    card.hidden = !isVisible;
+  });
 }
 
 function updateCardMotion(event) {
@@ -53,7 +37,7 @@ function resetCardMotion(event) {
 }
 
 function bindCardMotion() {
-  grid.querySelectorAll(".zodiac-card").forEach((card) => {
+  cards.forEach((card) => {
     card.addEventListener("pointermove", updateCardMotion);
     card.addEventListener("pointerleave", resetCardMotion);
     card.addEventListener("pointercancel", resetCardMotion);
@@ -64,8 +48,9 @@ filters.forEach((button) => {
   button.addEventListener("click", () => {
     filters.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
-    renderCards(button.dataset.filter);
+    filterCards(button.dataset.filter);
   });
 });
 
-renderCards();
+bindCardMotion();
+filterCards();

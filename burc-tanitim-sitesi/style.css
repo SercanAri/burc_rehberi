@@ -225,7 +225,8 @@ footer {
 }
 
 .zodiac-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   min-height: 260px;
   padding: 24px;
   text-align: left;
@@ -257,11 +258,154 @@ footer {
   overflow: hidden;
 }
 
-.zodiac-image-wrap svg,
-.zodiac-image-wrap img {
-  display: block;
-  width: 100%;
-  height: auto;
+.zodiac-card[hidden] {
+  display: none;
+}
+
+.zodiac-poster {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  isolation: isolate;
+  padding: 22px;
+  background:
+    radial-gradient(circle at 24% 20%, rgba(255, 255, 255, 0.18), transparent 0 28%),
+    radial-gradient(circle at 76% 78%, rgba(255, 255, 255, 0.18), transparent 0 26%),
+    linear-gradient(145deg, var(--poster-deep), #12091f 52%, var(--poster-primary));
+}
+
+.zodiac-poster::before,
+.zodiac-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.zodiac-poster::before {
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255, 248, 241, 0.82) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 78% 16%, rgba(255, 248, 241, 0.75) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 60% 30%, rgba(255, 248, 241, 0.62) 0 1px, transparent 2px),
+    radial-gradient(circle at 24% 54%, rgba(255, 248, 241, 0.66) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 84% 68%, rgba(255, 248, 241, 0.72) 0 1px, transparent 2px),
+    radial-gradient(circle at 50% 82%, rgba(255, 248, 241, 0.55) 0 1.3px, transparent 2px);
+  opacity: 0.9;
+}
+
+.zodiac-poster::after {
+  inset: 12px;
+  border: 1px solid rgba(255, 248, 241, 0.12);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(255, 255, 255, 0.07), transparent 44%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 40%);
+}
+
+.zodiac-poster-element,
+.zodiac-poster-name,
+.zodiac-poster-symbol {
+  position: relative;
+  z-index: 1;
+}
+
+.zodiac-poster-element {
+  align-self: flex-start;
+  color: rgba(255, 248, 241, 0.78);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+}
+
+.zodiac-poster-symbol {
+  align-self: center;
+  margin: 10px 0;
+  font-size: 4.8rem;
+  line-height: 1;
+  color: var(--poster-secondary);
+  text-shadow:
+    0 0 18px rgba(255, 255, 255, 0.18),
+    0 0 28px color-mix(in srgb, var(--poster-primary) 55%, transparent);
+}
+
+.zodiac-poster-name {
+  align-self: flex-end;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.poster-koc {
+  --poster-primary: #ff5c5c;
+  --poster-secondary: #ffcc93;
+  --poster-deep: #43112f;
+}
+
+.poster-boga {
+  --poster-primary: #2dd4bf;
+  --poster-secondary: #f5d06f;
+  --poster-deep: #173829;
+}
+
+.poster-ikizler {
+  --poster-primary: #60a5fa;
+  --poster-secondary: #c4b5fd;
+  --poster-deep: #182553;
+}
+
+.poster-yengec {
+  --poster-primary: #38bdf8;
+  --poster-secondary: #f0f9ff;
+  --poster-deep: #12314d;
+}
+
+.poster-aslan {
+  --poster-primary: #f97316;
+  --poster-secondary: #fde68a;
+  --poster-deep: #4a1805;
+}
+
+.poster-basak {
+  --poster-primary: #84cc16;
+  --poster-secondary: #f7d794;
+  --poster-deep: #1d3520;
+}
+
+.poster-terazi {
+  --poster-primary: #f0abfc;
+  --poster-secondary: #93c5fd;
+  --poster-deep: #2a1648;
+}
+
+.poster-akrep {
+  --poster-primary: #a855f7;
+  --poster-secondary: #fb7185;
+  --poster-deep: #210f38;
+}
+
+.poster-yay {
+  --poster-primary: #f59e0b;
+  --poster-secondary: #fef3c7;
+  --poster-deep: #3b2305;
+}
+
+.poster-oglak {
+  --poster-primary: #94a3b8;
+  --poster-secondary: #facc15;
+  --poster-deep: #20273d;
+}
+
+.poster-kova {
+  --poster-primary: #22d3ee;
+  --poster-secondary: #a78bfa;
+  --poster-deep: #13214f;
+}
+
+.poster-balik {
+  --poster-primary: #818cf8;
+  --poster-secondary: #67e8f9;
+  --poster-deep: #141b4b;
 }
 
 .zodiac-meta {
@@ -281,17 +425,6 @@ footer {
 .zodiac-card-detail {
   margin-top: 10px;
   color: rgba(255, 248, 241, 0.84);
-}
-
-.card-action {
-  display: inline-flex;
-  justify-content: center;
-  margin-top: 18px;
-  border-radius: 999px;
-  padding: 11px 15px;
-  color: #25122b;
-  background: var(--accent);
-  font-weight: 800;
 }
 
 .detail-hero {
