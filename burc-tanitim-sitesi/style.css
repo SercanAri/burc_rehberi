@@ -278,6 +278,11 @@ footer {
   font-size: 1.5rem;
 }
 
+.zodiac-card-detail {
+  margin-top: 10px;
+  color: rgba(255, 248, 241, 0.84);
+}
+
 .card-action {
   display: inline-flex;
   justify-content: center;

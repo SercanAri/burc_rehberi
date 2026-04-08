@@ -17,6 +17,7 @@ function renderCards(filter = "all") {
       </div>
       <h3>${sign.name}</h3>
       <p>${sign.summary}</p>
+      <p class="zodiac-card-detail">${sign.cardDetail}</p>
       <span class="card-action">Güncel yorumu aç</span>
     </a>
   `).join("");

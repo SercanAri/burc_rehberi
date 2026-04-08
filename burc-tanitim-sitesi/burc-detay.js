@@ -9,7 +9,7 @@ document.querySelector("#detailImage").alt = `${sign.name} burcu görseli`;
 document.querySelector("#updatedDate").textContent = `Güncellendi: ${reading.date}`;
 document.querySelector("#detailTitle").textContent = `${sign.symbol} ${sign.name} Burcu`;
 document.querySelector("#detailDate").textContent = `${sign.name} burcu tarihleri: ${sign.dates}`;
-document.querySelector("#detailDescription").textContent = `${sign.summary} Yönetici gezegen: ${sign.ruler}. Motto: "${sign.motto}"`;
+document.querySelector("#detailDescription").textContent = `${sign.summary} ${sign.cardDetail} Yönetici gezegen: ${sign.ruler}. Motto: "${sign.motto}"`;
 document.querySelector("#detailList").innerHTML = [
   `Element: ${sign.element}`,
   `Odak alanı: ${sign.focus}`,
