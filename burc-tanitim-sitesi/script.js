@@ -8,8 +8,8 @@ function renderCards(filter = "all") {
 
   grid.innerHTML = visibleSigns.map((sign) => `
     <a class="zodiac-card" href="burc.html?burc=${sign.slug}" aria-label="${sign.name} burcu detay sayfasına git">
-      <span class="zodiac-image-wrap">
-        <img src="${createZodiacImage(sign)}" alt="${sign.name} burcu görseli">
+      <span class="zodiac-image-wrap" aria-hidden="true">
+        ${createZodiacVisualMarkup(sign)}
       </span>
       <div class="zodiac-meta">
         <span>${sign.dates}</span>

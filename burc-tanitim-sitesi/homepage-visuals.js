@@ -40,39 +40,47 @@ function renderCardConstellation(points) {
   return `${lines}${nodes}`;
 }
 
-function createZodiacImage(sign) {
+function buildZodiacVisualSvg(sign) {
   const visual = zodiacCardVisuals[sign.slug] || zodiacCardVisuals.koc;
   const [primary, secondary, deep] = visual.colors;
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="${sign.name} burcu profesyonel gorseli">
+  const uid = `visual-${sign.slug}`;
+  const skyId = `${uid}-sky`;
+  const nebulaAId = `${uid}-nebula-a`;
+  const nebulaBId = `${uid}-nebula-b`;
+  const symbolGradientId = `${uid}-symbol-gradient`;
+  const softGlowId = `${uid}-soft-glow`;
+  const constellationGlowId = `${uid}-constellation-glow`;
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="presentation" aria-hidden="true">
       <defs>
-        <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id="${skyId}" x1="0" y1="0" x2="1" y2="1">
           <stop stop-color="${deep}"/>
           <stop offset=".52" stop-color="#12091f"/>
           <stop offset="1" stop-color="${primary}"/>
         </linearGradient>
-        <radialGradient id="nebulaA" cx="28%" cy="18%" r="70%">
+        <radialGradient id="${nebulaAId}" cx="28%" cy="18%" r="70%">
           <stop stop-color="${secondary}" stop-opacity=".72"/>
           <stop offset=".42" stop-color="${primary}" stop-opacity=".23"/>
           <stop offset="1" stop-color="${deep}" stop-opacity="0"/>
         </radialGradient>
-        <radialGradient id="nebulaB" cx="78%" cy="72%" r="62%">
+        <radialGradient id="${nebulaBId}" cx="78%" cy="72%" r="62%">
           <stop stop-color="${primary}" stop-opacity=".58"/>
           <stop offset=".48" stop-color="${secondary}" stop-opacity=".18"/>
           <stop offset="1" stop-color="#12091f" stop-opacity="0"/>
         </radialGradient>
-        <linearGradient id="symbolGradient" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id="${symbolGradientId}" x1="0" y1="0" x2="1" y2="1">
           <stop stop-color="${secondary}"/>
           <stop offset="1" stop-color="${primary}"/>
         </linearGradient>
-        <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <filter id="${softGlowId}" x="-40%" y="-40%" width="180%" height="180%">
           <feGaussianBlur stdDeviation="7" result="blur"/>
           <feMerge>
             <feMergeNode in="blur"/>
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
-        <filter id="constellationGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <filter id="${constellationGlowId}" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2.5" result="blur"/>
           <feMerge>
             <feMergeNode in="blur"/>
@@ -80,35 +88,31 @@ function createZodiacImage(sign) {
           </feMerge>
         </filter>
       </defs>
-      <rect width="320" height="220" rx="34" fill="url(#sky)"/>
-      <rect width="320" height="220" rx="34" fill="url(#nebulaA)"/>
-      <rect width="320" height="220" rx="34" fill="url(#nebulaB)"/>
+      <rect width="320" height="220" rx="34" fill="url(#${skyId})"/>
+      <rect width="320" height="220" rx="34" fill="url(#${nebulaAId})"/>
+      <rect width="320" height="220" rx="34" fill="url(#${nebulaBId})"/>
       <path d="M-10 165 C54 98 108 212 184 116 S286 24 340 92" fill="none" stroke="${secondary}" stroke-width="1.2" opacity=".24"/>
       <g>${renderCardStarField(sign)}</g>
-      <g stroke="${secondary}" stroke-width="2.3" stroke-linecap="round" fill="${secondary}" opacity=".92" filter="url(#constellationGlow)">
+      <g stroke="${secondary}" stroke-width="2.3" stroke-linecap="round" fill="${secondary}" opacity=".92" filter="url(#${constellationGlowId})">
         ${renderCardConstellation(visual.points)}
       </g>
-      <circle cx="244" cy="64" r="44" fill="${primary}" opacity=".18" filter="url(#softGlow)"/>
-      <circle cx="86" cy="158" r="54" fill="${secondary}" opacity=".12" filter="url(#softGlow)"/>
+      <circle cx="244" cy="64" r="44" fill="${primary}" opacity=".18" filter="url(#${softGlowId})"/>
+      <circle cx="86" cy="158" r="54" fill="${secondary}" opacity=".12" filter="url(#${softGlowId})"/>
       <g transform="translate(160 116)">
         <circle r="55" fill="#070712" opacity=".46"/>
         <circle r="52" fill="none" stroke="#fff8f1" stroke-opacity=".20" stroke-width="1"/>
-        <text text-anchor="middle" dominant-baseline="middle" font-size="82" font-family="Arial, sans-serif" fill="url(#symbolGradient)" filter="url(#softGlow)">${sign.symbol}</text>
+        <text text-anchor="middle" dominant-baseline="middle" font-size="82" font-family="Arial, sans-serif" fill="url(#${symbolGradientId})" filter="url(#${softGlowId})">${sign.symbol}</text>
       </g>
       <text x="28" y="40" font-size="14" font-weight="700" letter-spacing="3" font-family="Arial, sans-serif" fill="#fff8f1" opacity=".78">${sign.element.toUpperCase()}</text>
       <text x="292" y="192" text-anchor="end" font-size="23" font-weight="700" font-family="Arial, sans-serif" fill="#fff8f1">${sign.name}</text>
     </svg>
   `;
-
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
-const homepageVisualStyle = document.createElement("style");
-homepageVisualStyle.textContent = `
-  .zodiac-image-wrap {
-    min-height: 178px;
-    background: rgba(255, 255, 255, 0.07);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  }
-`;
-document.head.appendChild(homepageVisualStyle);
+function createZodiacVisualMarkup(sign) {
+  return buildZodiacVisualSvg(sign);
+}
+
+function createZodiacImage(sign) {
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(buildZodiacVisualSvg(sign))}`;
+}
