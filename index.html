@@ -3,30 +3,287 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=burc-tanitim-sitesi/">
   <title>Burç Tanıtım Sitesi</title>
-  <link rel="canonical" href="burc-tanitim-sitesi/">
-  <style>
-    body {
-      display: grid;
-      min-height: 100vh;
-      margin: 0;
-      place-items: center;
-      font-family: Arial, sans-serif;
-      color: #fff8f1;
-      background: #12091f;
-    }
-
-    a {
-      color: #ffb86b;
-      font-weight: 700;
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="neon-hover.css">
+  <link rel="stylesheet" href="nav-animations.css">
 </head>
 <body>
+  <header class="hero">
+    <nav class="navbar" aria-label="Ana navigasyon">
+      <a class="logo" href="index.html" aria-label="Astro ana sayfa">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 84 84" focusable="false">
+            <defs>
+              <linearGradient id="astroRing" x1="14" y1="14" x2="70" y2="70" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffd89b"/>
+                <stop offset="0.52" stop-color="#f08bb4"/>
+                <stop offset="1" stop-color="#a78bfa"/>
+              </linearGradient>
+              <linearGradient id="astroMoon" x1="24" y1="22" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fff5db"/>
+                <stop offset="1" stop-color="#ffcf9c"/>
+              </linearGradient>
+              <filter id="astroGlow" x="-35%" y="-35%" width="170%" height="170%">
+                <feGaussianBlur stdDeviation="2.6" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <circle cx="42" cy="42" r="27" fill="none" stroke="url(#astroRing)" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="122 42" transform="rotate(-28 42 42)" filter="url(#astroGlow)"/>
+            <path d="M45 20C33 20 24 30 24 42C24 54 33 64 45 64C50 64 55 62 59 58C51 56 46 49 46 41C46 33 51 26 59 24C55 21 50 20 45 20Z" fill="url(#astroMoon)"/>
+            <path d="M26 56C33 49 42 45 54 45" fill="none" stroke="rgba(255,248,241,0.78)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="54" cy="30" r="3.4" fill="#fff8f1"/>
+            <circle cx="61" cy="22" r="1.9" fill="#fff1c6"/>
+            <circle cx="63" cy="53" r="4.2" fill="#ff7a90"/>
+          </svg>
+        </span>
+        <span class="logo-text">Astro</span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link nav-starchart" href="yildiz-haritasi.html">Yıldız Haritası</a>
+        <a class="nav-link nav-zodiac" href="index.html#burclar">Burçları Keşfet</a>
+      </div>
+    </nav>
+
+    <section class="hero-content">
+      <p class="eyebrow" data-typing data-typing-order="1" data-typing-speed="14">12 burç, 4 element, tek rehber</p>
+      <h1 data-typing data-typing-order="2" data-typing-speed="18">Burcunu keşfet, karakterinin yıldız haritasına kısa bir yolculuk yap.</h1>
+      <p class="hero-text" data-typing data-typing-order="3" data-typing-speed="9">
+        Koç'tan Balık'a tüm burçların tarih aralıklarını, elementlerini ve öne çıkan
+        özelliklerini sade ve modern bir sayfada incele.
+      </p>
+      <a class="cta" href="#burclar">Hemen Başla</a>
+    </section>
+  </header>
+
   <main>
-    <h1>Burç Tanıtım Sitesi açılıyor...</h1>
-    <p>Otomatik yönlendirme çalışmazsa <a href="burc-tanitim-sitesi/">buraya tıkla</a>.</p>
+    <section class="intro" aria-label="Site özeti">
+      <article>
+        <span>01</span>
+        <h2>Elementlere göre filtrele</h2>
+        <p>Ateş, toprak, hava ve su gruplarını tek tıkla ayır.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h2>Kısa tanıtımları oku</h2>
+        <p>Her burcun temel enerjisini hızlıca öğren.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h2>Detayları incele</h2>
+        <p>Kartlara tıklayıp güçlü yönleri ve mottoları gör.</p>
+      </article>
+    </section>
+
+    <section id="burclar" class="zodiac-section">
+      <div class="section-heading">
+        <p class="eyebrow">Burç kataloğu</p>
+        <h2>Yıldızların diliyle 12 karakter</h2>
+      </div>
+
+      <div class="filters" aria-label="Burç element filtreleri">
+        <button class="filter active" type="button" data-filter="all">Tümü</button>
+        <button class="filter" type="button" data-filter="Ateş">Ateş</button>
+        <button class="filter" type="button" data-filter="Toprak">Toprak</button>
+        <button class="filter" type="button" data-filter="Hava">Hava</button>
+        <button class="filter" type="button" data-filter="Su">Su</button>
+      </div>
+
+      <div class="zodiac-grid" id="zodiacGrid" aria-live="polite">
+        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=koc" aria-label="Koç burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-koc" aria-hidden="true">
+            <span class="zodiac-poster-element">ATEŞ</span>
+            <span class="zodiac-poster-symbol">♈</span>
+            <span class="zodiac-poster-name">Koç</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>21 Mar - 19 Nis</span>
+            <span>Ateş</span>
+          </div>
+          <h3>Koç</h3>
+          <p>Cesur, hızlı karar alan ve başlangıç enerjisi yüksek bir burçtur.</p>
+          <p class="zodiac-card-detail">Koç enerjisi öne çıkmayı, yeni alanlara ilk adımı atmayı ve beklemeden harekete geçmeyi sever. Rekabet, tempo ve inisiyatif gerektiren ortamlarda parlar; sabırsızlaştığında ise aynı hız onu daha aceleci gösterebilir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=boga" aria-label="Boğa burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-boga" aria-hidden="true">
+            <span class="zodiac-poster-element">TOPRAK</span>
+            <span class="zodiac-poster-symbol">♉</span>
+            <span class="zodiac-poster-name">Boğa</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>20 Nis - 20 May</span>
+            <span>Toprak</span>
+          </div>
+          <h3>Boğa</h3>
+          <p>Güven, konfor ve istikrar arayan sabırlı bir enerji taşır.</p>
+          <p class="zodiac-card-detail">Boğa güven veren, ritmi sağlam ve konfor duygusu güçlü bir burçtur. Estetik, lezzet ve maddi güven onun için önemlidir; karar verdiğinde kolay kolay yön değiştirmemesi en belirgin özelliklerinden biridir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=ikizler" aria-label="İkizler burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-ikizler" aria-hidden="true">
+            <span class="zodiac-poster-element">HAVA</span>
+            <span class="zodiac-poster-symbol">♊</span>
+            <span class="zodiac-poster-name">İkizler</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>21 May - 20 Haz</span>
+            <span>Hava</span>
+          </div>
+          <h3>İkizler</h3>
+          <p>Meraklı, konuşkan ve değişime kolay uyum sağlayan bir burçtur.</p>
+          <p class="zodiac-card-detail">İkizler zihinsel hareketliliği yüksek, çevresinden sürekli bilgi toplayan ve aynı anda birkaç konuya ilgi duyan bir profildir. Konuşma, bağlantı kurma ve fikirler arasında geçiş yapma becerisi güçlüdür; dağınık göründüğü anlarda bile zihni yeni olasılıkları tarıyordur.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Su" href="burc.html?burc=yengec" aria-label="Yengeç burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-yengec" aria-hidden="true">
+            <span class="zodiac-poster-element">SU</span>
+            <span class="zodiac-poster-symbol">♋</span>
+            <span class="zodiac-poster-name">Yengeç</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>21 Haz - 22 Tem</span>
+            <span>Su</span>
+          </div>
+          <h3>Yengeç</h3>
+          <p>Duygusal bağlara, aileye ve güvenli alanlara önem verir.</p>
+          <p class="zodiac-card-detail">Yengeç sezgileriyle yön bulan, bağ kurduğu insanları korumaya çalışan ve duygusal güvene büyük değer veren bir burçtur. Dışarıdan temkinli görünse de güven hissettiğinde son derece şefkatli, sahiplenici ve destekleyici bir tavır sergiler.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=aslan" aria-label="Aslan burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-aslan" aria-hidden="true">
+            <span class="zodiac-poster-element">ATEŞ</span>
+            <span class="zodiac-poster-symbol">♌</span>
+            <span class="zodiac-poster-name">Aslan</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>23 Tem - 22 Ağu</span>
+            <span>Ateş</span>
+          </div>
+          <h3>Aslan</h3>
+          <p>Yaratıcı, sahne ışığını seven ve özgüveni yüksek bir burçtur.</p>
+          <p class="zodiac-card-detail">Aslan görünür olmayı, üretimini paylaşmayı ve bulunduğu ortama sıcaklık katmayı sever. Doğal özgüveni ve yaratıcı tavrı sayesinde dikkat çeker; takdir edildiğinde ise cömert ve motive edici bir enerji yayar.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=basak" aria-label="Başak burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-basak" aria-hidden="true">
+            <span class="zodiac-poster-element">TOPRAK</span>
+            <span class="zodiac-poster-symbol">♍</span>
+            <span class="zodiac-poster-name">Başak</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>23 Ağu - 22 Eyl</span>
+            <span>Toprak</span>
+          </div>
+          <h3>Başak</h3>
+          <p>Detaylara odaklanan, düzen seven ve çözüm üretmeyi bilen bir enerjidir.</p>
+          <p class="zodiac-card-detail">Başak düzen kurmayı, sorunları ayıklamayı ve işleri daha iyi hale getirmeyi seven analitik bir zihin taşır. İnce ayrıntıları fark etmesi ve pratik çözümler üretmesi güçlü yanıdır; bazen yüksek standartları onu fazla eleştirel gösterebilir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=terazi" aria-label="Terazi burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-terazi" aria-hidden="true">
+            <span class="zodiac-poster-element">HAVA</span>
+            <span class="zodiac-poster-symbol">♎</span>
+            <span class="zodiac-poster-name">Terazi</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>23 Eyl - 22 Eki</span>
+            <span>Hava</span>
+          </div>
+          <h3>Terazi</h3>
+          <p>Denge, zarafet ve ilişkiler üzerinden kendini ifade eder.</p>
+          <p class="zodiac-card-detail">Terazi ilişkilerde denge, adalet ve karşılıklılık arayan bir burçtur. Estetik bakışı güçlüdür; bir ortamın hem duygusal hem de görsel olarak uyumlu olmasını ister, bu yüzden karar verirken her yönü tartma eğilimindedir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Su" href="burc.html?burc=akrep" aria-label="Akrep burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-akrep" aria-hidden="true">
+            <span class="zodiac-poster-element">SU</span>
+            <span class="zodiac-poster-symbol">♏</span>
+            <span class="zodiac-poster-name">Akrep</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>23 Eki - 21 Kas</span>
+            <span>Su</span>
+          </div>
+          <h3>Akrep</h3>
+          <p>Derinlik, dönüşüm ve güçlü sezgilerle tanınır.</p>
+          <p class="zodiac-card-detail">Akrep derinlikten beslenir; insanların söylemediklerini, alt akıntıları ve güç dinamiklerini kolayca sezer. Güçlü sezgisi, sadakati ve kriz anındaki dayanıklılığıyla öne çıkar; dönüşüm onun karakterinin merkezindedir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=yay" aria-label="Yay burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-yay" aria-hidden="true">
+            <span class="zodiac-poster-element">ATEŞ</span>
+            <span class="zodiac-poster-symbol">♐</span>
+            <span class="zodiac-poster-name">Yay</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>22 Kas - 21 Ara</span>
+            <span>Ateş</span>
+          </div>
+          <h3>Yay</h3>
+          <p>Özgürlüğü, keşfi ve büyük resmi görmeyi sever.</p>
+          <p class="zodiac-card-detail">Yay büyük resmi görmeyi, sınırlarını genişletmeyi ve yeni deneyimlerle beslenmeyi seven özgür ruhlu bir burçtur. Yolculuk, öğrenme ve keşif duygusu arttıkça enerjisi yükselir; açık sözlülüğü bazen fazla keskin gelebilir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=oglak" aria-label="Oğlak burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-oglak" aria-hidden="true">
+            <span class="zodiac-poster-element">TOPRAK</span>
+            <span class="zodiac-poster-symbol">♑</span>
+            <span class="zodiac-poster-name">Oğlak</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>22 Ara - 19 Oca</span>
+            <span>Toprak</span>
+          </div>
+          <h3>Oğlak</h3>
+          <p>Hedef odaklı, disiplinli ve uzun vadeli başarıya yatkındır.</p>
+          <p class="zodiac-card-detail">Oğlak hedefe giden yolu planlayan, sabırlı ilerleyen ve başarıyı zamana yayılan emekle kuran bir burçtur. Sorumluluk almaktan kaçmaz; sağlam temeller atmayı ve sonuç veren yapılar kurmayı sever.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=kova" aria-label="Kova burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-kova" aria-hidden="true">
+            <span class="zodiac-poster-element">HAVA</span>
+            <span class="zodiac-poster-symbol">♒</span>
+            <span class="zodiac-poster-name">Kova</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>20 Oca - 18 Şub</span>
+            <span>Hava</span>
+          </div>
+          <h3>Kova</h3>
+          <p>Özgün fikirler, toplumsal bakış ve yenilikçi düşünceyle öne çıkar.</p>
+          <p class="zodiac-card-detail">Kova yenilik, bağımsız düşünce ve toplumsal fayda fikriyle hareket eden bir burçtur. Kendi çizgisini korumayı önemser; sıradışı fikirleri ve geleceğe dönük bakışıyla fark yaratırken duygularını her zaman hemen göstermeyebilir.</p>
+        </a>
+
+        <a class="zodiac-card" data-element="Su" href="burc.html?burc=balik" aria-label="Balık burcu detay sayfasına git">
+          <span class="zodiac-image-wrap zodiac-poster poster-balik" aria-hidden="true">
+            <span class="zodiac-poster-element">SU</span>
+            <span class="zodiac-poster-symbol">♓</span>
+            <span class="zodiac-poster-name">Balık</span>
+          </span>
+          <div class="zodiac-meta">
+            <span>19 Şub - 20 Mar</span>
+            <span>Su</span>
+          </div>
+          <h3>Balık</h3>
+          <p>Hayal gücü, empati ve sezgisel anlayışla hareket eder.</p>
+          <p class="zodiac-card-detail">Balık empati gücü yüksek, hayal dünyası zengin ve sezgisel algısı kuvvetli bir burçtur. Duyguları derinden hisseder; sanat, şifa, yaratıcılık ve iç dünyayla temas ettiği alanlarda çok daha parlak görünür.</p>
+        </a>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    <p>AstroRehber - Eğlence ve tanıtım amaçlı burç rehberi.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="ui-effects.js"></script>
 </body>
 </html>

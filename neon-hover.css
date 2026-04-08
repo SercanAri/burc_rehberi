@@ -1,0 +1,176 @@
+@property --neon-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.zodiac-card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glide-x: 0px;
+  --glide-y: 0px;
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+}
+
+.zodiac-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.zodiac-card::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  z-index: 3;
+  border-radius: 31px;
+  padding: 3px;
+  background:
+    radial-gradient(
+      circle at var(--spot-x) var(--spot-y),
+      rgba(255, 248, 241, 1) 0 7%,
+      rgba(255, 184, 107, 0.96) 8% 15%,
+      rgba(167, 139, 250, 0.82) 16% 24%,
+      transparent 34%
+    ),
+    conic-gradient(
+      from var(--neon-angle, 0deg),
+      transparent 0deg,
+      transparent 35deg,
+      rgba(34, 211, 238, 0.22) 58deg,
+      rgba(167, 139, 250, 0.9) 78deg,
+      rgba(255, 248, 241, 1) 96deg,
+      rgba(255, 184, 107, 1) 116deg,
+      rgba(255, 122, 144, 0.62) 138deg,
+      transparent 170deg,
+      transparent 360deg
+    );
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 184, 107, 0.8))
+    drop-shadow(0 0 22px rgba(167, 139, 250, 0.55));
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.zodiac-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      circle at var(--spot-x) var(--spot-y),
+      rgba(255, 248, 241, 0.34) 0,
+      rgba(255, 184, 107, 0.24) 14%,
+      rgba(167, 139, 250, 0.18) 27%,
+      rgba(34, 211, 238, 0.1) 38%,
+      transparent 54%
+    ),
+    radial-gradient(
+      circle at calc(var(--spot-x) + 12%) calc(var(--spot-y) + 10%),
+      rgba(255, 122, 144, 0.16),
+      transparent 36%
+    );
+  box-shadow:
+    inset 0 0 34px rgba(255, 248, 241, 0.1),
+    0 0 34px rgba(167, 139, 250, 0.18);
+  opacity: 0;
+  transform: scale(0.98);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background-position 0.2s ease;
+}
+
+.zodiac-card:hover::before,
+.zodiac-card:focus-visible::before {
+  opacity: 1;
+  animation: neon-border-spin 1.15s linear infinite;
+}
+
+.zodiac-card:hover::after,
+.zodiac-card:focus-visible::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.zodiac-card:hover,
+.zodiac-card:focus-visible {
+  z-index: 2;
+  transform:
+    perspective(900px)
+    translateY(-10px)
+    rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y))
+    scale(1.025);
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.46),
+    0 0 36px rgba(255, 184, 107, 0.2),
+    0 0 58px rgba(167, 139, 250, 0.18);
+}
+
+.zodiac-card .zodiac-image-wrap,
+.zodiac-card .zodiac-image-wrap img,
+.zodiac-card .card-action {
+  transition:
+    transform 0.32s ease,
+    filter 0.32s ease,
+    box-shadow 0.32s ease,
+    background 0.32s ease;
+}
+
+.zodiac-card:hover .zodiac-image-wrap,
+.zodiac-card:focus-visible .zodiac-image-wrap {
+  transform:
+    translateZ(18px)
+    translate(var(--glide-x), var(--glide-y))
+    scale(1.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 18px 42px rgba(0, 0, 0, 0.28);
+}
+
+.zodiac-card:hover .zodiac-image-wrap img,
+.zodiac-card:focus-visible .zodiac-image-wrap img {
+  transform: scale(1.06);
+  filter: saturate(1.18) contrast(1.08) brightness(1.08);
+}
+
+.zodiac-card:hover .card-action,
+.zodiac-card:focus-visible .card-action {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #fff8f1, #ffb86b 42%, #a78bfa);
+  box-shadow:
+    0 10px 28px rgba(255, 184, 107, 0.28),
+    0 0 22px rgba(167, 139, 250, 0.22);
+}
+
+@keyframes neon-border-spin {
+  to {
+    --neon-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zodiac-card:hover::before,
+  .zodiac-card:focus-visible::before {
+    animation-duration: 3s;
+  }
+}

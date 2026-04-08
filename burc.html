@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burç Detayı | AstroRehber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="nav-animations.css">
+</head>
+<body>
+  <header class="detail-hero">
+    <nav class="navbar" aria-label="Ana navigasyon">
+      <a class="logo" href="index.html" aria-label="Astro ana sayfa">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 84 84" focusable="false">
+            <defs>
+              <linearGradient id="astroRing" x1="14" y1="14" x2="70" y2="70" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffd89b"/>
+                <stop offset="0.52" stop-color="#f08bb4"/>
+                <stop offset="1" stop-color="#a78bfa"/>
+              </linearGradient>
+              <linearGradient id="astroMoon" x1="24" y1="22" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fff5db"/>
+                <stop offset="1" stop-color="#ffcf9c"/>
+              </linearGradient>
+              <filter id="astroGlow" x="-35%" y="-35%" width="170%" height="170%">
+                <feGaussianBlur stdDeviation="2.6" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <circle cx="42" cy="42" r="27" fill="none" stroke="url(#astroRing)" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="122 42" transform="rotate(-28 42 42)" filter="url(#astroGlow)"/>
+            <path d="M45 20C33 20 24 30 24 42C24 54 33 64 45 64C50 64 55 62 59 58C51 56 46 49 46 41C46 33 51 26 59 24C55 21 50 20 45 20Z" fill="url(#astroMoon)"/>
+            <path d="M26 56C33 49 42 45 54 45" fill="none" stroke="rgba(255,248,241,0.78)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="54" cy="30" r="3.4" fill="#fff8f1"/>
+            <circle cx="61" cy="22" r="1.9" fill="#fff1c6"/>
+            <circle cx="63" cy="53" r="4.2" fill="#ff7a90"/>
+          </svg>
+        </span>
+        <span class="logo-text">Astro</span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link nav-starchart" href="yildiz-haritasi.html">Yıldız Haritası</a>
+        <a class="nav-link nav-zodiac" href="index.html#burclar">Burçları Keşfet</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="detail-main">
+    <section class="detail-panel detail-panel-page" aria-label="Burç detay sayfası">
+      <div class="detail-image-wrap">
+        <img id="detailImage" src="" alt="">
+      </div>
+      <div>
+        <p class="eyebrow" id="updatedDate" data-typing data-typing-order="1" data-typing-speed="14">Güncel burç yorumu</p>
+        <h1 class="detail-page-title" id="detailTitle" data-typing data-typing-order="2" data-typing-speed="18">Burç detayı</h1>
+        <p class="detail-date" id="detailDate" data-typing data-typing-order="3" data-typing-speed="14"></p>
+        <p id="detailDescription"></p>
+      </div>
+      <ul id="detailList"></ul>
+    </section>
+
+    <section class="daily-section" aria-label="Güncel yorumlar">
+      <div class="section-heading">
+        <p class="eyebrow">Bugünün yorumu</p>
+        <h2 id="dailyHeading">Güncel bilgiler</h2>
+      </div>
+
+      <div class="daily-grid" id="dailyGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AstroRehber - Eğlence ve tanıtım amaçlı günlük burç rehberi.</p>
+  </footer>
+
+  <script src="zodiac-data.js"></script>
+  <script src="burc-detay.js"></script>
+  <script src="ui-effects.js"></script>
+</body>
+</html>

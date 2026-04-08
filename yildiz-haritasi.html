@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Doğum bilgilerinle kişisel yıldız haritan için hızlı ve estetik bir ön astroloji analizi oluştur.">
+  <title>Yıldız Haritası Hesaplama | AstroRehber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="yildiz-haritasi.css">
+  <link rel="stylesheet" href="nav-animations.css">
+</head>
+<body class="natal-page">
+  <div class="space-backdrop" aria-hidden="true"></div>
+  <div class="batman-sky" aria-hidden="true">
+    <div class="flying-batman" id="flyingBatman">
+      <svg viewBox="0 0 240 128" focusable="false">
+        <defs>
+          <linearGradient id="capeSheen" x1="12" x2="228" y1="24" y2="112" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#050611"/>
+            <stop offset="0.5" stop-color="#151b34"/>
+            <stop offset="1" stop-color="#050611"/>
+          </linearGradient>
+          <filter id="batmanGlow" x="-35%" y="-45%" width="170%" height="190%">
+            <feGaussianBlur stdDeviation="3.8" result="blur"/>
+            <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.98 0 1 0 0 0.72 0 0 1 0 0.32 0 0 0 0.45 0" result="warmGlow"/>
+            <feMerge>
+              <feMergeNode in="warmGlow"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <g class="batman-silhouette" filter="url(#batmanGlow)">
+          <path class="bat-cape bat-cape-left" d="M119 42C88 19 51 24 13 55C35 53 45 65 32 87C58 73 79 78 88 112C96 83 106 61 119 42Z"/>
+          <path class="bat-cape bat-cape-right" d="M121 42C152 19 189 24 227 55C205 53 195 65 208 87C182 73 161 78 152 112C144 83 134 61 121 42Z"/>
+          <path class="bat-shoulders" d="M79 67C96 53 108 49 120 49C132 49 144 53 161 67C145 71 134 78 120 92C106 78 95 71 79 67Z"/>
+          <path class="bat-body" d="M103 42C106 29 112 23 120 23C128 23 134 29 137 42L133 79C131 94 126 105 120 112C114 105 109 94 107 79L103 42Z"/>
+          <path class="bat-cowl" d="M103 38L109 15L116 30C119 29 121 29 124 30L131 15L137 38C141 51 134 61 120 61C106 61 99 51 103 38Z"/>
+          <path class="bat-eye bat-eye-left" d="M110 43L117 45L111 47Z"/>
+          <path class="bat-eye bat-eye-right" d="M130 43L123 45L129 47Z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <header class="chart-hero">
+    <nav class="navbar" aria-label="Ana navigasyon">
+      <a class="logo" href="index.html" aria-label="Astro ana sayfa">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 84 84" focusable="false">
+            <defs>
+              <linearGradient id="astroRing" x1="14" y1="14" x2="70" y2="70" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ffd89b"/>
+                <stop offset="0.52" stop-color="#f08bb4"/>
+                <stop offset="1" stop-color="#a78bfa"/>
+              </linearGradient>
+              <linearGradient id="astroMoon" x1="24" y1="22" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fff5db"/>
+                <stop offset="1" stop-color="#ffcf9c"/>
+              </linearGradient>
+              <filter id="astroGlow" x="-35%" y="-35%" width="170%" height="170%">
+                <feGaussianBlur stdDeviation="2.6" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <circle cx="42" cy="42" r="27" fill="none" stroke="url(#astroRing)" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="122 42" transform="rotate(-28 42 42)" filter="url(#astroGlow)"/>
+            <path d="M45 20C33 20 24 30 24 42C24 54 33 64 45 64C50 64 55 62 59 58C51 56 46 49 46 41C46 33 51 26 59 24C55 21 50 20 45 20Z" fill="url(#astroMoon)"/>
+            <path d="M26 56C33 49 42 45 54 45" fill="none" stroke="rgba(255,248,241,0.78)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="54" cy="30" r="3.4" fill="#fff8f1"/>
+            <circle cx="61" cy="22" r="1.9" fill="#fff1c6"/>
+            <circle cx="63" cy="53" r="4.2" fill="#ff7a90"/>
+          </svg>
+        </span>
+        <span class="logo-text">Astro</span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link nav-starchart" href="yildiz-haritasi.html">Yıldız Haritası</a>
+        <a class="nav-link nav-zodiac" href="index.html#burclar">Burçları Keşfet</a>
+      </div>
+    </nav>
+
+    <section class="chart-hero-content">
+      <p class="eyebrow" data-typing data-typing-order="1" data-typing-speed="14">Natal chart aracı</p>
+      <h1 data-typing data-typing-order="2" data-typing-speed="18">Kendi Yıldız Haritanı Keşfet</h1>
+      <p class="hero-text" data-typing data-typing-order="3" data-typing-speed="9">
+        Doğduğun anın gökyüzü sana ne anlatıyor? Doğum tarihini, saatini ve yerini gir,
+        dakikalar içinde kişisel ön analizini gör.
+      </p>
+      <div class="hero-actions">
+        <a class="cta" href="#chartTool">Haritanı Oluştur</a>
+        <a class="ghost-cta" href="#chartTool">Ücretsiz Analiz</a>
+      </div>
+    </section>
+  </header>
+
+  <main class="chart-main">
+    <section id="chartTool" class="chart-tool" aria-label="Yıldız haritası hesaplama formu">
+      <div class="tool-copy">
+        <p class="eyebrow">Hızlı ve güvenli</p>
+        <h2>Doğum bilgilerini gir, haritanı görselleştirelim.</h2>
+        <p>
+          Bu araç GitHub Pages üzerinde çalışan bir ön analiz deneyimidir. Verileriniz
+          tarayıcınızda işlenir, saklanmaz ve herhangi bir sunucuya gönderilmez.
+        </p>
+        <div class="trust-grid" aria-label="Güven notları">
+          <article>
+            <strong>Veri saklama yok</strong>
+            <span>Form bilgileri cihazınızdan çıkmaz.</span>
+          </article>
+          <article>
+            <strong>Mobil uyumlu</strong>
+            <span>Tek kolon, hızlı ve sade giriş.</span>
+          </article>
+          <article>
+            <strong>API hazır yapı</strong>
+            <span>Swiss Ephemeris entegrasyonuna uygun akış.</span>
+          </article>
+        </div>
+      </div>
+
+      <form class="chart-form" id="chartForm">
+        <label>
+          Doğum Tarihi
+          <input type="date" id="birthDate" required>
+        </label>
+
+        <label>
+          Doğum Saati
+          <span class="field-hint" title="Doğum saatini bilmiyorsan yaklaşık bir saat girebilirsin. Yükselen ve evler saat bilgisine duyarlıdır.">Opsiyonel ama önerilir</span>
+          <input type="time" id="birthTime" inputmode="numeric" placeholder="HH:mm">
+        </label>
+
+        <label>
+          Doğum Yeri
+          <input type="text" id="birthPlace" list="birthPlaces" placeholder="İstanbul, Türkiye" autocomplete="off" required>
+        </label>
+
+        <datalist id="birthPlaces">
+          <option value="İstanbul, Türkiye"></option>
+          <option value="Ankara, Türkiye"></option>
+          <option value="İzmir, Türkiye"></option>
+          <option value="Antalya, Türkiye"></option>
+          <option value="Bursa, Türkiye"></option>
+          <option value="Berlin, Almanya"></option>
+          <option value="Londra, Birleşik Krallık"></option>
+          <option value="New York, ABD"></option>
+        </datalist>
+
+        <p class="form-note">Doğum saati bilinmiyorsa yaklaşık gir. Hatasız yükselen için saat ve şehir bilgisi önemlidir.</p>
+        <button class="cta chart-submit" type="submit">Haritanı Oluştur</button>
+      </form>
+    </section>
+
+    <section class="loading-card" id="loadingCard" aria-live="polite" hidden>
+      <span class="loading-orbit"></span>
+      <p>Gökyüzü analiz ediliyor...</p>
+    </section>
+
+    <section class="chart-results" id="chartResults" aria-label="Yıldız haritası sonuçları" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Kişisel ön analiz</p>
+          <h2 id="resultTitle">Haritan hazır</h2>
+        </div>
+        <span class="result-badge" id="accuracyBadge">Ön analiz</span>
+      </div>
+
+      <div class="result-layout">
+        <article class="chart-wheel-card">
+          <div class="chart-wheel" id="chartWheel" aria-label="Dairesel doğum haritası görselleştirmesi"></div>
+          <p class="chart-source">Arka plan görseli: <a href="https://science.nasa.gov/asset/hubble/hubble-photographs-grand-design-spiral-galaxy-m81/" target="_blank" rel="noreferrer">NASA Hubble M81 Spiral Galaxy</a>, Image Credit: NASA, ESA, and The Hubble Heritage Team (STScI/AURA).</p>
+        </article>
+
+        <article class="summary-panel">
+          <h3>Özet Analiz</h3>
+          <div class="summary-grid" id="summaryGrid"></div>
+          <p id="summaryText"></p>
+        </article>
+      </div>
+
+      <div class="analysis-grid" id="analysisGrid"></div>
+
+      <section class="premium-entry" aria-label="Ek özellikler">
+        <article>
+          <span>Yakında</span>
+          <h3>Partner Uyumu</h3>
+          <p>İkinci kişi ekleyerek synastry uyum analizi.</p>
+        </article>
+        <article>
+          <span>Premium</span>
+          <h3>PDF Rapor</h3>
+          <p>Haritanı indirilebilir detaylı rapor olarak alma.</p>
+        </article>
+        <article>
+          <span>Günlük</span>
+          <h3>Haritana Göre Yorum</h3>
+          <p>Doğum haritana göre kişisel günlük mini yorum.</p>
+        </article>
+      </section>
+    </section>
+
+    <section class="seo-panel" aria-label="Yıldız haritası bilgi alanı">
+      <p class="eyebrow">Bilgi merkezi</p>
+      <h2>Doğum haritası hesaplama nedir?</h2>
+      <p>
+        Doğum haritası, doğduğun tarih, saat ve konuma göre Güneş, Ay, yükselen ve
+        gezegen yerleşimlerini yorumlamaya yardımcı olan astroloji haritasıdır.
+        Hassas sonuçlar için zaman dilimi ve konum hesaplaması kritik önemdedir.
+      </p>
+      <div class="keyword-list" aria-label="SEO anahtar kelimeleri">
+        <span>doğum haritası hesaplama</span>
+        <span>yıldız haritası çıkarma</span>
+        <span>natal chart nedir</span>
+        <span>ücretsiz astroloji analizi</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>AstroRehber - Eğlence ve tanıtım amaçlı astroloji aracı. Hassas hesaplama için backend astroloji API entegrasyonu gerekir.</p>
+  </footer>
+
+  <script src="zodiac-data.js"></script>
+  <script src="yildiz-haritasi.js"></script>
+  <script src="ui-effects.js"></script>
+</body>
+</html>
