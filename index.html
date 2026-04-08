@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Burç Tanıtım Sitesi</title>
+  <title>Burç Tanıtım Sitesi | Astro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 <body>
   <header class="hero">
     <nav class="navbar" aria-label="Ana navigasyon">
-      <a class="logo" href="index.html" aria-label="Astro ana sayfa">
+      <a class="logo" href="index.html" aria-label="Astro ana sayfa" data-route="index.html">
         <span class="logo-mark" aria-hidden="true">
           <svg viewBox="0 0 84 84" focusable="false">
             <defs>
@@ -46,8 +46,8 @@
         <span class="logo-text">Astro</span>
       </a>
       <div class="nav-actions">
-        <a class="nav-link nav-starchart" href="yildiz-haritasi.html">Yıldız Haritası</a>
-        <a class="nav-link nav-zodiac" href="index.html#burclar">Burçları Keşfet</a>
+        <a class="nav-link nav-starchart" href="yildiz-haritasi.html" data-route="yildiz-haritasi.html">Yıldız Haritası</a>
+        <a class="nav-link nav-zodiac" href="index.html#burclar" data-route="index.html" data-hash="burclar">Burçları Keşfet</a>
       </div>
     </nav>
 
@@ -96,7 +96,7 @@
       </div>
 
       <div class="zodiac-grid" id="zodiacGrid" aria-live="polite">
-        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=koc" aria-label="Koç burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=koc" data-route="burc.html" data-sign="koc" aria-label="Koç burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-koc" aria-hidden="true">
             <span class="zodiac-poster-element">ATEŞ</span>
             <span class="zodiac-poster-symbol">♈</span>
@@ -111,7 +111,7 @@
           <p class="zodiac-card-detail">Koç enerjisi öne çıkmayı, yeni alanlara ilk adımı atmayı ve beklemeden harekete geçmeyi sever. Rekabet, tempo ve inisiyatif gerektiren ortamlarda parlar; sabırsızlaştığında ise aynı hız onu daha aceleci gösterebilir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=boga" aria-label="Boğa burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=boga" data-route="burc.html" data-sign="boga" aria-label="Boğa burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-boga" aria-hidden="true">
             <span class="zodiac-poster-element">TOPRAK</span>
             <span class="zodiac-poster-symbol">♉</span>
@@ -126,7 +126,7 @@
           <p class="zodiac-card-detail">Boğa güven veren, ritmi sağlam ve konfor duygusu güçlü bir burçtur. Estetik, lezzet ve maddi güven onun için önemlidir; karar verdiğinde kolay kolay yön değiştirmemesi en belirgin özelliklerinden biridir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=ikizler" aria-label="İkizler burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=ikizler" data-route="burc.html" data-sign="ikizler" aria-label="İkizler burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-ikizler" aria-hidden="true">
             <span class="zodiac-poster-element">HAVA</span>
             <span class="zodiac-poster-symbol">♊</span>
@@ -141,7 +141,7 @@
           <p class="zodiac-card-detail">İkizler zihinsel hareketliliği yüksek, çevresinden sürekli bilgi toplayan ve aynı anda birkaç konuya ilgi duyan bir profildir. Konuşma, bağlantı kurma ve fikirler arasında geçiş yapma becerisi güçlüdür; dağınık göründüğü anlarda bile zihni yeni olasılıkları tarıyordur.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Su" href="burc.html?burc=yengec" aria-label="Yengeç burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Su" href="burc.html?burc=yengec" data-route="burc.html" data-sign="yengec" aria-label="Yengeç burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-yengec" aria-hidden="true">
             <span class="zodiac-poster-element">SU</span>
             <span class="zodiac-poster-symbol">♋</span>
@@ -156,7 +156,7 @@
           <p class="zodiac-card-detail">Yengeç sezgileriyle yön bulan, bağ kurduğu insanları korumaya çalışan ve duygusal güvene büyük değer veren bir burçtur. Dışarıdan temkinli görünse de güven hissettiğinde son derece şefkatli, sahiplenici ve destekleyici bir tavır sergiler.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=aslan" aria-label="Aslan burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=aslan" data-route="burc.html" data-sign="aslan" aria-label="Aslan burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-aslan" aria-hidden="true">
             <span class="zodiac-poster-element">ATEŞ</span>
             <span class="zodiac-poster-symbol">♌</span>
@@ -171,7 +171,7 @@
           <p class="zodiac-card-detail">Aslan görünür olmayı, üretimini paylaşmayı ve bulunduğu ortama sıcaklık katmayı sever. Doğal özgüveni ve yaratıcı tavrı sayesinde dikkat çeker; takdir edildiğinde ise cömert ve motive edici bir enerji yayar.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=basak" aria-label="Başak burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=basak" data-route="burc.html" data-sign="basak" aria-label="Başak burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-basak" aria-hidden="true">
             <span class="zodiac-poster-element">TOPRAK</span>
             <span class="zodiac-poster-symbol">♍</span>
@@ -186,7 +186,7 @@
           <p class="zodiac-card-detail">Başak düzen kurmayı, sorunları ayıklamayı ve işleri daha iyi hale getirmeyi seven analitik bir zihin taşır. İnce ayrıntıları fark etmesi ve pratik çözümler üretmesi güçlü yanıdır; bazen yüksek standartları onu fazla eleştirel gösterebilir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=terazi" aria-label="Terazi burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=terazi" data-route="burc.html" data-sign="terazi" aria-label="Terazi burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-terazi" aria-hidden="true">
             <span class="zodiac-poster-element">HAVA</span>
             <span class="zodiac-poster-symbol">♎</span>
@@ -201,7 +201,7 @@
           <p class="zodiac-card-detail">Terazi ilişkilerde denge, adalet ve karşılıklılık arayan bir burçtur. Estetik bakışı güçlüdür; bir ortamın hem duygusal hem de görsel olarak uyumlu olmasını ister, bu yüzden karar verirken her yönü tartma eğilimindedir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Su" href="burc.html?burc=akrep" aria-label="Akrep burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Su" href="burc.html?burc=akrep" data-route="burc.html" data-sign="akrep" aria-label="Akrep burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-akrep" aria-hidden="true">
             <span class="zodiac-poster-element">SU</span>
             <span class="zodiac-poster-symbol">♏</span>
@@ -216,7 +216,7 @@
           <p class="zodiac-card-detail">Akrep derinlikten beslenir; insanların söylemediklerini, alt akıntıları ve güç dinamiklerini kolayca sezer. Güçlü sezgisi, sadakati ve kriz anındaki dayanıklılığıyla öne çıkar; dönüşüm onun karakterinin merkezindedir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=yay" aria-label="Yay burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Ateş" href="burc.html?burc=yay" data-route="burc.html" data-sign="yay" aria-label="Yay burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-yay" aria-hidden="true">
             <span class="zodiac-poster-element">ATEŞ</span>
             <span class="zodiac-poster-symbol">♐</span>
@@ -231,7 +231,7 @@
           <p class="zodiac-card-detail">Yay büyük resmi görmeyi, sınırlarını genişletmeyi ve yeni deneyimlerle beslenmeyi seven özgür ruhlu bir burçtur. Yolculuk, öğrenme ve keşif duygusu arttıkça enerjisi yükselir; açık sözlülüğü bazen fazla keskin gelebilir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=oglak" aria-label="Oğlak burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Toprak" href="burc.html?burc=oglak" data-route="burc.html" data-sign="oglak" aria-label="Oğlak burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-oglak" aria-hidden="true">
             <span class="zodiac-poster-element">TOPRAK</span>
             <span class="zodiac-poster-symbol">♑</span>
@@ -246,7 +246,7 @@
           <p class="zodiac-card-detail">Oğlak hedefe giden yolu planlayan, sabırlı ilerleyen ve başarıyı zamana yayılan emekle kuran bir burçtur. Sorumluluk almaktan kaçmaz; sağlam temeller atmayı ve sonuç veren yapılar kurmayı sever.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=kova" aria-label="Kova burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Hava" href="burc.html?burc=kova" data-route="burc.html" data-sign="kova" aria-label="Kova burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-kova" aria-hidden="true">
             <span class="zodiac-poster-element">HAVA</span>
             <span class="zodiac-poster-symbol">♒</span>
@@ -261,7 +261,7 @@
           <p class="zodiac-card-detail">Kova yenilik, bağımsız düşünce ve toplumsal fayda fikriyle hareket eden bir burçtur. Kendi çizgisini korumayı önemser; sıradışı fikirleri ve geleceğe dönük bakışıyla fark yaratırken duygularını her zaman hemen göstermeyebilir.</p>
         </a>
 
-        <a class="zodiac-card" data-element="Su" href="burc.html?burc=balik" aria-label="Balık burcu detay sayfasına git">
+        <a class="zodiac-card" data-element="Su" href="burc.html?burc=balik" data-route="burc.html" data-sign="balik" aria-label="Balık burcu detay sayfasına git">
           <span class="zodiac-image-wrap zodiac-poster poster-balik" aria-hidden="true">
             <span class="zodiac-poster-element">SU</span>
             <span class="zodiac-poster-symbol">♓</span>
@@ -280,9 +280,10 @@
   </main>
 
   <footer>
-    <p>AstroRehber - Eğlence ve tanıtım amaçlı burç rehberi.</p>
+    <p>Astro - Eğlence ve tanıtım amaçlı burç rehberi.</p>
   </footer>
 
+  <script src="site-navigation.js"></script>
   <script src="script.js"></script>
   <script src="ui-effects.js"></script>
 </body>

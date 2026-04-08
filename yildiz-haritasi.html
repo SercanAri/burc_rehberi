@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Doğum bilgilerinle kişisel yıldız haritan için hızlı ve estetik bir ön astroloji analizi oluştur.">
-  <title>Yıldız Haritası Hesaplama | AstroRehber</title>
+  <title>Yıldız Haritası Hesaplama | Astro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
 
   <header class="chart-hero">
     <nav class="navbar" aria-label="Ana navigasyon">
-      <a class="logo" href="index.html" aria-label="Astro ana sayfa">
+      <a class="logo" href="index.html" aria-label="Astro ana sayfa" data-route="index.html">
         <span class="logo-mark" aria-hidden="true">
           <svg viewBox="0 0 84 84" focusable="false">
             <defs>
@@ -79,8 +79,8 @@
         <span class="logo-text">Astro</span>
       </a>
       <div class="nav-actions">
-        <a class="nav-link nav-starchart" href="yildiz-haritasi.html">Yıldız Haritası</a>
-        <a class="nav-link nav-zodiac" href="index.html#burclar">Burçları Keşfet</a>
+        <a class="nav-link nav-starchart" href="yildiz-haritasi.html" data-route="yildiz-haritasi.html">Yıldız Haritası</a>
+        <a class="nav-link nav-zodiac" href="index.html#burclar" data-route="index.html" data-hash="burclar">Burçları Keşfet</a>
       </div>
     </nav>
 
@@ -222,9 +222,10 @@
   </main>
 
   <footer>
-    <p>AstroRehber - Eğlence ve tanıtım amaçlı astroloji aracı. Hassas hesaplama için backend astroloji API entegrasyonu gerekir.</p>
+    <p>Astro - Eğlence ve tanıtım amaçlı astroloji aracı. Hassas hesaplama için backend astroloji API entegrasyonu gerekir.</p>
   </footer>
 
+  <script src="site-navigation.js"></script>
   <script src="zodiac-data.js"></script>
   <script src="yildiz-haritasi.js"></script>
   <script src="ui-effects.js"></script>
