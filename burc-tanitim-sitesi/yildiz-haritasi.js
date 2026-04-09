@@ -1,247 +1,437 @@
 const chartForm = document.querySelector("#chartForm");
 const loadingCard = document.querySelector("#loadingCard");
+const loadingMessage = document.querySelector("#loadingMessage");
 const chartResults = document.querySelector("#chartResults");
 const resultTitle = document.querySelector("#resultTitle");
+const resultSubtitle = document.querySelector("#resultSubtitle");
 const accuracyBadge = document.querySelector("#accuracyBadge");
+const sourceBadge = document.querySelector("#sourceBadge");
 const chartWheel = document.querySelector("#chartWheel");
 const summaryGrid = document.querySelector("#summaryGrid");
 const summaryText = document.querySelector("#summaryText");
 const analysisGrid = document.querySelector("#analysisGrid");
-const flyingBatman = document.querySelector("#flyingBatman");
-const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const resultHighlights = document.querySelector("#resultHighlights");
+const elementBarsCard = document.querySelector("#elementBarsCard");
+const placementsTableBody = document.querySelector("#placementsTableBody");
+const aspectList = document.querySelector("#aspectList");
+const birthDateInput = document.querySelector("#birthDate");
+const birthTimeInput = document.querySelector("#birthTime");
+const birthPlaceInput = document.querySelector("#birthPlace");
+const cityPreviewCard = document.querySelector("#cityPreviewCard");
+const cityPreviewName = document.querySelector("#cityPreviewName");
+const cityPreviewMeta = document.querySelector("#cityPreviewMeta");
+const formNote = document.querySelector("#formNote");
 
+const astro = window.Astronomy;
+const TURKEY_UTC_OFFSET = 3;
 const elementOrder = ["Ateş", "Toprak", "Hava", "Su"];
+const loadingSteps = [
+  "UTC zamanı hazırlanıyor...",
+  "Gezegen konumları hesaplanıyor...",
+  "Yükselen ve MC bulunuyor...",
+  "Açılar yorumlanıyor..."
+];
 const planetGlyphs = {
   sun: "☉",
   moon: "☽",
-  rising: "ASC",
+  mercury: "☿",
   venus: "♀",
   mars: "♂",
-  mc: "MC",
-  saturn: "♄"
+  jupiter: "♃",
+  saturn: "♄",
+  uranus: "♅",
+  neptune: "♆",
+  pluto: "♇",
+  asc: "ASC",
+  mc: "MC"
 };
-
-const elementTone = {
-  "Ateş": "hareket, cesaret ve görünür olma isteği yüksek",
-  "Toprak": "istikrar, pratiklik ve güven ihtiyacı belirgin",
-  "Hava": "iletişim, öğrenme ve sosyal akış güçlü",
-  "Su": "sezgi, duygu ve içsel bağlar derin"
+const cityDisplayMap = {
+  Adiyaman: "Adıyaman",
+  Agri: "Ağrı",
+  Aydin: "Aydın",
+  Balikesir: "Balıkesir",
+  Bingol: "Bingöl",
+  Canakkale: "Çanakkale",
+  Cankiri: "Çankırı",
+  Corum: "Çorum",
+  Diyarbakir: "Diyarbakır",
+  Elazig: "Elazığ",
+  Eskisehir: "Eskişehir",
+  Gumushane: "Gümüşhane",
+  Istanbul: "İstanbul",
+  Izmir: "İzmir",
+  Kirklareli: "Kırklareli",
+  Kirsehir: "Kırşehir",
+  Kutahya: "Kütahya",
+  Kahramanmaras: "Kahramanmaraş",
+  Mugla: "Muğla",
+  Mus: "Muş",
+  Nevsehir: "Nevşehir",
+  Nigde: "Niğde",
+  Sanliurfa: "Şanlıurfa",
+  Usak: "Uşak",
+  Tekirdag: "Tekirdağ",
+  Sirnak: "Şırnak",
+  Bartin: "Bartın",
+  Igdir: "Iğdır",
+  Karabuk: "Karabük",
+  Duzce: "Düzce"
 };
+const planetDefinitions = [
+  { key: "sun", label: "Güneş", body: () => astro.Body.Sun, aspect: true },
+  { key: "moon", label: "Ay", body: null, aspect: true },
+  { key: "mercury", label: "Merkür", body: () => astro.Body.Mercury, aspect: true },
+  { key: "venus", label: "Venüs", body: () => astro.Body.Venus, aspect: true },
+  { key: "mars", label: "Mars", body: () => astro.Body.Mars, aspect: true },
+  { key: "jupiter", label: "Jüpiter", body: () => astro.Body.Jupiter, aspect: true },
+  { key: "saturn", label: "Satürn", body: () => astro.Body.Saturn, aspect: true },
+  { key: "uranus", label: "Uranus", body: () => astro.Body.Uranus, aspect: false },
+  { key: "neptune", label: "Neptün", body: () => astro.Body.Neptune, aspect: false },
+  { key: "pluto", label: "Plüton", body: () => astro.Body.Pluto, aspect: false }
+];
+const aspectDefinitions = [
+  { angle: 0, label: "Kavuşum", orb: 8, tone: "temayı çok güçlü ve doğrudan çalıştırır" },
+  { angle: 60, label: "Sekstil", orb: 4, tone: "daha akıcı ve destekleyici çalışır" },
+  { angle: 90, label: "Kare", orb: 6, tone: "gerilim ve gelişim ihtiyacı üretir" },
+  { angle: 120, label: "Üçgen", orb: 6, tone: "doğal akışta çalışan bir yetenek verir" },
+  { angle: 180, label: "Karşıt", orb: 8, tone: "denge kurmayı ve farkındalık geliştirmeyi ister" }
+];
 
-let flyingBatmanAnimation;
-let flyingBatmanTimer;
+let loadingIntervalId;
 
-function randomBetween(min, max) {
-  return Math.random() * (max - min) + min;
+function normalizeCityKey(value) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/,?\s*turkiye$/i, "")
+    .replace(/[ç]/g, "c")
+    .replace(/[ğ]/g, "g")
+    .replace(/[ıi]/g, "i")
+    .replace(/[ö]/g, "o")
+    .replace(/[ş]/g, "s")
+    .replace(/[ü]/g, "u")
+    .replace(/[^a-z0-9]/g, "");
 }
 
-function getFlyingBatmanRoute() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const heroWidth = flyingBatman.offsetWidth || 190;
-  const fromLeft = Math.random() > 0.5;
-  const direction = fromLeft ? 1 : -1;
-  const safeTop = Math.max(64, height * 0.1);
-  const safeBottom = Math.max(safeTop + 120, height * 0.58);
+function toDisplayCityName(value) {
+  const prettified = cityDisplayMap[value] || value;
+
+  return prettified;
+}
+
+const cityIndex = new Map(
+  turkeyCities.map((city) => [
+    normalizeCityKey(city.name),
+    { ...city, displayName: toDisplayCityName(city.name) }
+  ])
+);
+
+function populateCityList() {
+  birthPlaceInput.innerHTML = [
+    `<option value="">İl seç</option>`,
+    ...turkeyCities.map((city) => {
+    const displayName = toDisplayCityName(city.name);
+      return `<option value="${displayName}">${displayName}</option>`;
+    })
+  ].join("");
+}
+
+function findCity(value) {
+  return cityIndex.get(normalizeCityKey(value)) || null;
+}
+
+function updateCityPreview() {
+  const city = findCity(birthPlaceInput.value);
+
+  if (!city) {
+    cityPreviewCard.hidden = true;
+    return;
+  }
+
+  cityPreviewName.textContent = city.displayName;
+  cityPreviewMeta.textContent = `${city.latitude.toFixed(4)} / ${city.longitude.toFixed(4)} • UTC+03:00`;
+  cityPreviewCard.hidden = false;
+}
+
+function setMaxBirthDate() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  birthDateInput.max = `${year}-${month}-${day}`;
+}
+
+function startLoading() {
+  let stepIndex = 0;
+  loadingMessage.textContent = loadingSteps[0];
+  loadingCard.hidden = false;
+  chartResults.hidden = true;
+
+  window.clearInterval(loadingIntervalId);
+  loadingIntervalId = window.setInterval(() => {
+    stepIndex = (stepIndex + 1) % loadingSteps.length;
+    loadingMessage.textContent = loadingSteps[stepIndex];
+  }, 680);
+}
+
+function stopLoading() {
+  window.clearInterval(loadingIntervalId);
+  loadingCard.hidden = true;
+}
+
+function normalizeAngle(angle) {
+  return ((angle % 360) + 360) % 360;
+}
+
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+
+function radiansToDegrees(radians) {
+  return radians * 180 / Math.PI;
+}
+
+function getSignByLongitude(longitude) {
+  return zodiacSigns[Math.floor(normalizeAngle(longitude) / 30) % 12];
+}
+
+function getDegreeInSign(longitude) {
+  return normalizeAngle(longitude) % 30;
+}
+
+function formatDegree(longitude) {
+  const degreeInSign = getDegreeInSign(longitude);
+  let degrees = Math.floor(degreeInSign);
+  let minutes = Math.round((degreeInSign - degrees) * 60);
+
+  if (minutes === 60) {
+    degrees += 1;
+    minutes = 0;
+  }
+
+  return `${degrees}° ${String(minutes).padStart(2, "0")}'`;
+}
+
+function formatSignedDegree(value) {
+  return `${value >= 0 ? "+" : ""}${value.toFixed(2)}°`;
+}
+
+function toUtcDate(dateValue, timeValue) {
+  const [year, month, day] = dateValue.split("-").map(Number);
+  const [hour, minute] = (timeValue || "12:00").split(":").map(Number);
+
+  return new Date(Date.UTC(year, month - 1, day, hour - TURKEY_UTC_OFFSET, minute));
+}
+
+function createEclipticVector(longitude, time) {
+  const radians = degreesToRadians(longitude);
+  return new astro.Vector(Math.cos(radians), Math.sin(radians), 0, astro.MakeTime(time));
+}
+
+function chooseEclipticIntersection(candidates, time, observer, chooser) {
+  const rotation = astro.Rotation_ECL_HOR(time, observer);
+
+  return candidates
+    .map((longitude) => {
+      const eclipticVector = createEclipticVector(longitude, time);
+      const horizontalVector = astro.RotateVector(rotation, eclipticVector);
+      const horizontal = astro.HorizonFromVector(horizontalVector, null);
+      return {
+        longitude: normalizeAngle(longitude),
+        altitude: horizontal.lat,
+        azimuth: horizontal.lon
+      };
+    })
+    .sort(chooser)[0];
+}
+
+function calculateAscendantAndMc(time, city) {
+  const observer = new astro.Observer(city.latitude, city.longitude, 0);
+  const rotation = astro.Rotation_ECL_HOR(time, observer);
+  const ascRow = rotation.rot[2];
+  const mcRow = rotation.rot[1];
+  const baseAsc = normalizeAngle(radiansToDegrees(Math.atan2(-ascRow[0], ascRow[1])));
+  const baseMc = normalizeAngle(radiansToDegrees(Math.atan2(-mcRow[0], mcRow[1])));
+  const asc = chooseEclipticIntersection(
+    [baseAsc, baseAsc + 180],
+    time,
+    observer,
+    (a, b) => Math.abs(a.azimuth - 90) - Math.abs(b.azimuth - 90)
+  );
+  const mc = chooseEclipticIntersection(
+    [baseMc, baseMc + 180],
+    time,
+    observer,
+    (a, b) => b.altitude - a.altitude
+  );
 
   return {
-    startX: fromLeft ? -heroWidth * 1.8 : width + heroWidth * 1.8,
-    endX: fromLeft ? width + heroWidth * 1.8 : -heroWidth * 1.8,
-    startY: randomBetween(safeTop, safeBottom),
-    midX: randomBetween(width * 0.18, width * 0.82),
-    midY: randomBetween(safeTop * 0.7, Math.max(safeTop + 80, height * 0.52)),
-    endY: randomBetween(safeTop, safeBottom),
-    direction,
-    scale: randomBetween(0.72, 1.18),
-    duration: randomBetween(7600, 12800),
-    delay: randomBetween(250, 900)
+    ascendantLongitude: asc.longitude,
+    mcLongitude: mc.longitude,
+    observer
   };
 }
 
-function formatBatmanTransform(x, y, rotate, direction, scale) {
-  return `translate3d(${x}px, ${y}px, 0) rotate(${rotate}deg) scale(${direction * scale}, ${scale})`;
+function getPlanetLongitude(definition, time) {
+  if (definition.key === "moon") {
+    return normalizeAngle(astro.Ecliptic(astro.GeoMoon(time)).elon);
+  }
+
+  return normalizeAngle(astro.Ecliptic(astro.GeoVector(definition.body(), time, true)).elon);
 }
 
-function scheduleFlyingBatman(delay = 900) {
-  window.clearTimeout(flyingBatmanTimer);
+function getHouseNumber(longitude, ascendantLongitude) {
+  const ascSignIndex = Math.floor(normalizeAngle(ascendantLongitude) / 30);
+  const placementSignIndex = Math.floor(normalizeAngle(longitude) / 30);
 
-  if (!flyingBatman || reducedMotionQuery.matches) {
-    return;
-  }
-
-  flyingBatmanTimer = window.setTimeout(animateFlyingBatman, delay);
+  return ((placementSignIndex - ascSignIndex + 12) % 12) + 1;
 }
 
-function animateFlyingBatman() {
-  if (!flyingBatman || reducedMotionQuery.matches) {
-    return;
-  }
+function getElementCounts(placements) {
+  const totals = { "Ateş": 0, Toprak: 0, Hava: 0, Su: 0 };
+  const weights = {
+    sun: 3,
+    moon: 2,
+    mercury: 1,
+    venus: 1,
+    mars: 1,
+    jupiter: 1,
+    saturn: 1,
+    asc: 2,
+    mc: 1
+  };
 
-  if (flyingBatmanAnimation) {
-    flyingBatmanAnimation.cancel();
-  }
-
-  const route = getFlyingBatmanRoute();
-
-  flyingBatmanAnimation = flyingBatman.animate([
-    {
-      transform: formatBatmanTransform(route.startX, route.startY, route.direction * -6, route.direction, route.scale),
-      opacity: 0,
-      offset: 0
-    },
-    {
-      transform: formatBatmanTransform(route.startX + route.direction * 120, route.startY - 18, route.direction * 4, route.direction, route.scale),
-      opacity: 0.86,
-      offset: 0.14
-    },
-    {
-      transform: formatBatmanTransform(route.midX, route.midY, route.direction * -8, route.direction, route.scale * 1.08),
-      opacity: 0.96,
-      offset: 0.55
-    },
-    {
-      transform: formatBatmanTransform(route.endX - route.direction * 120, route.endY + 12, route.direction * 5, route.direction, route.scale),
-      opacity: 0.82,
-      offset: 0.86
-    },
-    {
-      transform: formatBatmanTransform(route.endX, route.endY, route.direction * -6, route.direction, route.scale * 0.94),
-      opacity: 0,
-      offset: 1
-    }
-  ], {
-    duration: route.duration,
-    easing: "cubic-bezier(0.42, 0, 0.18, 1)",
-    fill: "both"
+  placements.forEach((placement) => {
+    const sign = getSignByLongitude(placement.longitude);
+    totals[sign.element] += weights[placement.key] || 1;
   });
 
-  flyingBatmanAnimation.onfinish = () => scheduleFlyingBatman(route.delay);
-}
-
-function setupFlyingBatman() {
-  if (!flyingBatman || reducedMotionQuery.matches) {
-    return;
-  }
-
-  scheduleFlyingBatman(randomBetween(250, 900));
-}
-
-function handleMotionPreferenceChange(event) {
-  if (event.matches) {
-    window.clearTimeout(flyingBatmanTimer);
-    flyingBatmanAnimation?.cancel();
-    return;
-  }
-
-  setupFlyingBatman();
-}
-
-if (reducedMotionQuery.addEventListener) {
-  reducedMotionQuery.addEventListener("change", handleMotionPreferenceChange);
-} else if (reducedMotionQuery.addListener) {
-  reducedMotionQuery.addListener(handleMotionPreferenceChange);
-}
-
-window.addEventListener("load", setupFlyingBatman);
-
-function findSign(slug) {
-  return zodiacSigns.find((sign) => sign.slug === slug) || zodiacSigns[0];
-}
-
-function getSunSign(dateValue) {
-  const [, month, day] = dateValue.split("-").map(Number);
-  const code = month * 100 + day;
-
-  if (code >= 321 && code <= 419) return findSign("koc");
-  if (code >= 420 && code <= 520) return findSign("boga");
-  if (code >= 521 && code <= 620) return findSign("ikizler");
-  if (code >= 621 && code <= 722) return findSign("yengec");
-  if (code >= 723 && code <= 822) return findSign("aslan");
-  if (code >= 823 && code <= 922) return findSign("basak");
-  if (code >= 923 && code <= 1022) return findSign("terazi");
-  if (code >= 1023 && code <= 1121) return findSign("akrep");
-  if (code >= 1122 && code <= 1221) return findSign("yay");
-  if (code >= 1222 || code <= 119) return findSign("oglak");
-  if (code >= 120 && code <= 218) return findSign("kova");
-  return findSign("balik");
-}
-
-function createSeed(value) {
-  return Array.from(value).reduce((total, char, index) => {
-    return total + char.charCodeAt(0) * (index + 3);
-  }, 0);
-}
-
-function getSignByIndex(index) {
-  const safeIndex = ((index % zodiacSigns.length) + zodiacSigns.length) % zodiacSigns.length;
-  return zodiacSigns[safeIndex];
-}
-
-function getPlacement(baseIndex, seed, offset) {
-  const sign = getSignByIndex(baseIndex + seed + offset);
-  const degree = (seed * (offset + 11) + offset * 17) % 30;
-
-  return { sign, degree };
+  return totals;
 }
 
 function getDominantElement(elements) {
   return Object.entries(elements).sort((a, b) => b[1] - a[1])[0][0];
 }
 
-function buildChartData({ date, time, place }) {
-  const safeTime = time || "12:00";
-  const [year, month, day] = date.split("-").map(Number);
-  const [hour, minute] = safeTime.split(":").map(Number);
-  const seed = createSeed(`${date}|${safeTime}|${place}`);
-  const sun = getSunSign(date);
-  const sunIndex = zodiacSigns.findIndex((sign) => sign.slug === sun.slug);
-  const timeShift = Math.round((hour + minute / 60) / 2);
-  const placeShift = place.trim().length % 12;
-  const moon = getSignByIndex(sunIndex + Math.floor(seed / 17) + Math.floor(day / 3));
-  const rising = getSignByIndex(sunIndex + timeShift + placeShift);
-  const venus = getPlacement(sunIndex, seed % 12, 2).sign;
-  const mars = getPlacement(sunIndex, Math.floor(seed / 5) % 12, 5).sign;
-  const mc = getSignByIndex(sunIndex + timeShift + 9);
-  const saturn = getPlacement(sunIndex, Math.floor(seed / 11) % 12, 8).sign;
-  const elements = elementOrder.reduce((totals, element) => ({ ...totals, [element]: 0 }), {});
-  const weightedPlacements = [
-    [sun, 3],
-    [moon, 2],
-    [rising, 2],
-    [venus, 1],
-    [mars, 1],
-    [mc, 1],
-    [saturn, 1]
-  ];
+function getAspectSummary(aspects) {
+  if (!aspects.length) {
+    return "Belirgin ana açı görünümü az; bu haritada temalar daha çok gezegen burç yerleşimleri üzerinden okunuyor.";
+  }
 
-  weightedPlacements.forEach(([sign, weight]) => {
-    elements[sign.element] += weight;
+  const topAspect = aspects[0];
+  return `${topAspect.first.label} ile ${topAspect.second.label} arasındaki ${topAspect.aspect.label.toLowerCase()} etkisi haritanın dikkat çeken ana bağlantılarından biri ve ${topAspect.aspect.tone}.`;
+}
+
+function calculateAspects(placements) {
+  const eligible = placements.filter((placement) => placement.aspect);
+  const aspects = [];
+
+  for (let i = 0; i < eligible.length; i += 1) {
+    for (let j = i + 1; j < eligible.length; j += 1) {
+      const first = eligible[i];
+      const second = eligible[j];
+      const rawDifference = Math.abs(first.longitude - second.longitude);
+      const difference = rawDifference > 180 ? 360 - rawDifference : rawDifference;
+      const matchedAspect = aspectDefinitions
+        .map((aspect) => ({ aspect, orb: Math.abs(difference - aspect.angle) }))
+        .filter((entry) => entry.orb <= entry.aspect.orb)
+        .sort((a, b) => a.orb - b.orb)[0];
+
+      if (matchedAspect) {
+        aspects.push({
+          first,
+          second,
+          aspect: matchedAspect.aspect,
+          orb: matchedAspect.orb
+        });
+      }
+    }
+  }
+
+  return aspects.sort((a, b) => a.orb - b.orb).slice(0, 6);
+}
+
+function buildPlacements(time, ascendantLongitude, mcLongitude) {
+  const planetPlacements = planetDefinitions.map((definition) => {
+    const longitude = getPlanetLongitude(definition, time);
+    const sign = getSignByLongitude(longitude);
+
+    return {
+      key: definition.key,
+      label: definition.label,
+      glyph: planetGlyphs[definition.key],
+      longitude,
+      sign,
+      house: getHouseNumber(longitude, ascendantLongitude),
+      degreeLabel: formatDegree(longitude),
+      aspect: definition.aspect
+    };
   });
+  const ascSign = getSignByLongitude(ascendantLongitude);
+  const mcSign = getSignByLongitude(mcLongitude);
+
+  planetPlacements.push({
+    key: "asc",
+    label: "Yükselen",
+    glyph: planetGlyphs.asc,
+    longitude: ascendantLongitude,
+    sign: ascSign,
+    house: 1,
+    degreeLabel: formatDegree(ascendantLongitude),
+    aspect: false
+  });
+  planetPlacements.push({
+    key: "mc",
+    label: "MC",
+    glyph: planetGlyphs.mc,
+    longitude: mcLongitude,
+    sign: mcSign,
+    house: 10,
+    degreeLabel: formatDegree(mcLongitude),
+    aspect: false
+  });
+
+  return planetPlacements;
+}
+
+function getSiderealString(time, city) {
+  const siderealHours = normalizeAngle((astro.SiderealTime(time) * 15) + city.longitude) / 15;
+  const hours = Math.floor(siderealHours);
+  const minutes = Math.floor((siderealHours - hours) * 60);
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function buildChartData({ date, time, city }) {
+  const utcDate = toUtcDate(date, time);
+  const { ascendantLongitude, mcLongitude } = calculateAscendantAndMc(utcDate, city);
+  const placements = buildPlacements(utcDate, ascendantLongitude, mcLongitude);
+  const elements = getElementCounts(placements);
+  const dominantElement = getDominantElement(elements);
+  const aspects = calculateAspects(placements);
+  const byKey = Object.fromEntries(placements.map((placement) => [placement.key, placement]));
 
   return {
     date,
     time,
-    safeTime,
-    place,
-    year,
-    month,
-    day,
-    seed,
-    sun: { sign: sun, degree: (seed + day) % 30 },
-    moon: { sign: moon, degree: (seed + month * 3) % 30 },
-    rising: { sign: rising, degree: (hour * 2 + minute + placeShift) % 30 },
-    venus: { sign: venus, degree: (seed + 7) % 30 },
-    mars: { sign: mars, degree: (seed + 16) % 30 },
-    mc: { sign: mc, degree: (seed + 24) % 30 },
-    saturn: { sign: saturn, degree: (seed + 3) % 30 },
+    utcDate,
+    city,
+    placements,
+    aspects,
     elements,
-    dominantElement: getDominantElement(elements),
+    dominantElement,
+    siderealTime: getSiderealString(utcDate, city),
+    accuracy: time ? "Yüksek güven" : "Saat eksik",
+    source: "Astronomy Engine + il merkezi koordinatı",
+    byKey,
     missingTime: !time
   };
 }
 
 function polarPoint(radius, angle) {
-  const radians = (angle - 90) * Math.PI / 180;
+  const radians = degreesToRadians(angle - 90);
 
   return {
     x: 210 + radius * Math.cos(radians),
@@ -250,62 +440,75 @@ function polarPoint(radius, angle) {
 }
 
 function createWheelSvg(data) {
-  const placements = [
-    ["sun", "Güneş", data.sun],
-    ["moon", "Ay", data.moon],
-    ["rising", "Yükselen", data.rising],
-    ["venus", "Venüs", data.venus],
-    ["mars", "Mars", data.mars],
-    ["mc", "MC", data.mc],
-    ["saturn", "Satürn", data.saturn]
-  ];
+  const ascSignStart = Math.floor(data.byKey.asc.longitude / 30) * 30;
   const signLabels = zodiacSigns.map((sign, index) => {
     const point = polarPoint(176, index * 30 + 15);
-    return `<text x="${point.x.toFixed(1)}" y="${point.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${sign.symbol}</text>`;
+    return `<text class="wheel-sign-label" x="${point.x.toFixed(1)}" y="${point.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${sign.symbol}</text>`;
   }).join("");
-  const houseLines = zodiacSigns.map((_, index) => {
+  const signDividers = zodiacSigns.map((_, index) => {
     const outer = polarPoint(190, index * 30);
-    const inner = polarPoint(74, index * 30);
-    return `<line x1="${inner.x.toFixed(1)}" y1="${inner.y.toFixed(1)}" x2="${outer.x.toFixed(1)}" y2="${outer.y.toFixed(1)}"/>`;
+    const inner = polarPoint(86, index * 30);
+    return `<line class="wheel-sign-divider" x1="${inner.x.toFixed(1)}" y1="${inner.y.toFixed(1)}" x2="${outer.x.toFixed(1)}" y2="${outer.y.toFixed(1)}"></line>`;
   }).join("");
-  const planetDots = placements.map(([key, label, placement], index) => {
-    const signIndex = zodiacSigns.findIndex((sign) => sign.slug === placement.sign.slug);
-    const angle = signIndex * 30 + placement.degree;
-    const point = polarPoint(112 + (index % 3) * 13, angle);
+  const houseLines = Array.from({ length: 12 }, (_, index) => {
+    const angle = ascSignStart + index * 30;
+    const outer = polarPoint(150, angle);
+    const inner = polarPoint(46, angle);
+    return `<line class="wheel-house-line" x1="${inner.x.toFixed(1)}" y1="${inner.y.toFixed(1)}" x2="${outer.x.toFixed(1)}" y2="${outer.y.toFixed(1)}"></line>`;
+  }).join("");
+  const houseLabels = Array.from({ length: 12 }, (_, index) => {
+    const point = polarPoint(104, ascSignStart + index * 30 + 15);
+    return `<text class="wheel-house-label" x="${point.x.toFixed(1)}" y="${point.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${index + 1}</text>`;
+  }).join("");
+  const chartPlacements = data.placements.map((placement, index) => {
+    const point = polarPoint(124 + (index % 3) * 12, placement.longitude);
     return `
       <g class="planet-dot" transform="translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})">
-        <title>${label}: ${placement.sign.name} ${placement.degree}°</title>
+        <title>${placement.label}: ${placement.sign.name} ${placement.degreeLabel}</title>
         <circle r="15"></circle>
-        <text text-anchor="middle" dominant-baseline="middle">${planetGlyphs[key]}</text>
+        <text text-anchor="middle" dominant-baseline="middle">${placement.glyph}</text>
       </g>
     `;
   }).join("");
+  const ascOuter = polarPoint(194, data.byKey.asc.longitude);
+  const ascInner = polarPoint(148, data.byKey.asc.longitude);
+  const ascLabel = polarPoint(206, data.byKey.asc.longitude);
+  const mcOuter = polarPoint(194, data.byKey.mc.longitude);
+  const mcInner = polarPoint(148, data.byKey.mc.longitude);
+  const mcLabel = polarPoint(206, data.byKey.mc.longitude);
 
   return `
-    <svg viewBox="0 0 420 420" role="img" aria-label="Yıldız haritası ön analiz çarkı">
+    <svg viewBox="0 0 420 420" role="img" aria-label="Yıldız haritası çarkı">
       <defs>
         <radialGradient id="chartGlow" cx="50%" cy="50%" r="55%">
-          <stop stop-color="#ffb86b" stop-opacity="0.26"/>
-          <stop offset="0.48" stop-color="#a78bfa" stop-opacity="0.12"/>
-          <stop offset="1" stop-color="#070713" stop-opacity="0"/>
+          <stop stop-color="#ffb86b" stop-opacity="0.26"></stop>
+          <stop offset="0.48" stop-color="#a78bfa" stop-opacity="0.12"></stop>
+          <stop offset="1" stop-color="#070713" stop-opacity="0"></stop>
         </radialGradient>
         <filter id="planetGlow" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="3.6" result="blur"/>
+          <feGaussianBlur stdDeviation="3.6" result="blur"></feGaussianBlur>
           <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
+            <feMergeNode in="blur"></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
           </feMerge>
         </filter>
       </defs>
-      <circle cx="210" cy="210" r="198" fill="url(#chartGlow)"/>
-      <circle cx="210" cy="210" r="190" fill="rgba(7, 7, 19, 0.72)" stroke="rgba(255, 248, 241, 0.25)" stroke-width="1.4"/>
-      <circle cx="210" cy="210" r="150" fill="none" stroke="rgba(255, 184, 107, 0.34)" stroke-width="1.1"/>
-      <circle cx="210" cy="210" r="74" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255, 248, 241, 0.2)" stroke-width="1"/>
-      <g class="house-lines">${houseLines}</g>
-      <g class="sign-labels">${signLabels}</g>
-      <g filter="url(#planetGlow)">${planetDots}</g>
+      <circle cx="210" cy="210" r="198" fill="url(#chartGlow)"></circle>
+      <circle class="wheel-zodiac-ring" cx="210" cy="210" r="190"></circle>
+      <circle cx="210" cy="210" r="150" fill="none" stroke="rgba(255, 184, 107, 0.34)" stroke-width="1.1"></circle>
+      <circle cx="210" cy="210" r="86" fill="none" stroke="rgba(255, 248, 241, 0.16)" stroke-width="1"></circle>
+      <circle cx="210" cy="210" r="46" fill="rgba(255, 255, 255, 0.05)" stroke="rgba(255, 248, 241, 0.2)" stroke-width="1"></circle>
+      <g>${signDividers}</g>
+      <g>${houseLines}</g>
+      <g>${houseLabels}</g>
+      <g>${signLabels}</g>
+      <line class="marker-line asc" x1="${ascInner.x.toFixed(1)}" y1="${ascInner.y.toFixed(1)}" x2="${ascOuter.x.toFixed(1)}" y2="${ascOuter.y.toFixed(1)}"></line>
+      <text class="marker-label" x="${ascLabel.x.toFixed(1)}" y="${ascLabel.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">ASC</text>
+      <line class="marker-line mc" x1="${mcInner.x.toFixed(1)}" y1="${mcInner.y.toFixed(1)}" x2="${mcOuter.x.toFixed(1)}" y2="${mcOuter.y.toFixed(1)}"></line>
+      <text class="marker-label" x="${mcLabel.x.toFixed(1)}" y="${mcLabel.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">MC</text>
+      <g filter="url(#planetGlow)">${chartPlacements}</g>
       <text x="210" y="204" text-anchor="middle" class="wheel-title">Natal</text>
-      <text x="210" y="230" text-anchor="middle" class="wheel-subtitle">Ön Analiz</text>
+      <text x="210" y="228" text-anchor="middle" class="wheel-subtitle">Astronomik Harita</text>
     </svg>
   `;
 }
@@ -326,87 +529,191 @@ function createElementBars(elements) {
   `;
 }
 
-function renderResults(data) {
-  const placeText = data.place.trim();
-  const timeText = data.time ? data.time : "Saat bilinmiyor";
-  const dominantTone = elementTone[data.dominantElement];
+function renderHighlights(data) {
+  const cards = [
+    {
+      label: "Güneş Burcu",
+      value: `${data.byKey.sun.sign.symbol} ${data.byKey.sun.sign.name}`,
+      note: data.byKey.sun.degreeLabel
+    },
+    {
+      label: "Ay Burcu",
+      value: `${data.byKey.moon.sign.symbol} ${data.byKey.moon.sign.name}`,
+      note: data.byKey.moon.degreeLabel
+    },
+    {
+      label: "Yükselen",
+      value: `${data.byKey.asc.sign.symbol} ${data.byKey.asc.sign.name}`,
+      note: data.missingTime ? "Saat eksik olduğu için tahmini" : data.byKey.asc.degreeLabel
+    },
+    {
+      label: "MC",
+      value: `${data.byKey.mc.sign.symbol} ${data.byKey.mc.sign.name}`,
+      note: data.byKey.mc.degreeLabel
+    }
+  ];
 
-  resultTitle.textContent = `${placeText} için haritan hazır`;
-  accuracyBadge.textContent = data.missingTime ? "Saat yaklaşık" : "Ön analiz";
-  chartWheel.innerHTML = createWheelSvg(data);
+  resultHighlights.innerHTML = cards.map((card) => `
+    <article class="highlight-card">
+      <span>${card.label}</span>
+      <strong>${card.value}</strong>
+      <p>${card.note}</p>
+    </article>
+  `).join("");
+}
+
+function renderSummary(data) {
   summaryGrid.innerHTML = [
-    ["Güneş Burcu", `${data.sun.sign.symbol} ${data.sun.sign.name}`],
-    ["Yükselen", `${data.rising.sign.symbol} ${data.rising.sign.name}`],
-    ["Ay Burcu", `${data.moon.sign.symbol} ${data.moon.sign.name}`]
+    ["Konum", `${data.city.displayName}`],
+    ["Saat Dilimi", "UTC+03:00"],
+    ["Yerel Yıldız Zamanı", data.siderealTime],
+    ["Ev Sistemi", "Whole Sign"]
   ].map(([label, value]) => `
     <article>
       <span>${label}</span>
       <strong>${value}</strong>
     </article>
   `).join("");
-  summaryText.textContent = `${data.sun.sign.name} Güneş enerjisi, ${data.rising.sign.name} yükselen etkisi ve ${data.moon.sign.name} Ay duygusuyla; ${dominantTone} bir profil oluşturuyor. Doğum bilgileri: ${data.date}, ${timeText}, ${placeText}.`;
 
-  analysisGrid.innerHTML = [
+  summaryText.textContent = `${data.city.displayName} koordinatlarıyla hesaplanan bu haritada ${data.byKey.sun.sign.name} Güneş, ${data.byKey.moon.sign.name} Ay ve ${data.byKey.asc.sign.name} yükselen kombinasyonu öne çıkıyor. ${getAspectSummary(data.aspects)} Doğum bilgisi: ${data.date}${data.time ? ` ${data.time}` : " (saat eksik)"}.`;
+  elementBarsCard.innerHTML = createElementBars(data.elements);
+}
+
+function renderAnalysis(data) {
+  const dominantSign = getSignByLongitude(data.byKey.asc.longitude);
+  const dominantElement = data.dominantElement;
+  const cards = [
     {
-      title: "Kişilik Analizi",
-      text: `${data.sun.sign.summary} Element dengesinde ${data.dominantElement} vurgusu öne çıktığı için karar alma biçiminde ${dominantTone} bir ton hissedilir.`,
-      extra: createElementBars(data.elements)
+      title: "Kimlik ve Dışarı Yansıma",
+      text: `${data.byKey.sun.sign.summary} Yükselen ${dominantSign.name} olduğu için insanlar seni ilk anda daha çok ${dominantSign.focus.toLowerCase()} alanlarında okur. Element dengesinde ${dominantElement.toLowerCase()} vurgusu belirgin.`
     },
     {
       title: "Duygusal Yapı",
-      text: `Ay burcun ${data.moon.sign.name}; içsel tepkilerde ${data.moon.sign.focus.toLowerCase()} temaları belirginleşebilir. Bu yerleşim duygusal güven ihtiyacını anlamak için güçlü bir göstergedir.`
+      text: `Ay ${data.byKey.moon.sign.name} yerleşimi, duygusal reflekslerde ${data.byKey.moon.sign.focus.toLowerCase()} temasını güçlendirir. ${data.byKey.moon.sign.cardDetail}`
     },
     {
-      title: "İlişkiler",
-      text: `Venüs ${data.venus.sign.name}, Mars ${data.mars.sign.name} etkisi ilişkilerde hem sevgi dilini hem de motivasyon tarzını anlatır. ${data.venus.sign.ruler} ve ${data.mars.sign.ruler} temaları burada birlikte okunabilir.`
+      title: "İletişim, Aşk ve Motivasyon",
+      text: `Merkür ${data.byKey.mercury.sign.name}, Venüs ${data.byKey.venus.sign.name} ve Mars ${data.byKey.mars.sign.name} üçlüsü zihinsel tarzını, sevgi dilini ve harekete geçiş biçimini anlatır. Bu kombinasyonda ${data.byKey.venus.sign.motto.toLowerCase()} çizgisi ilişkilere de yansıyabilir.`
     },
     {
-      title: "Kariyer ve Potansiyel",
-      text: `MC noktası ${data.mc.sign.name} vurgusunda görünüyor. Kariyer tarafında ${data.mc.sign.focus.toLowerCase()} alanları daha görünür olabilir. Satürn ${data.saturn.sign.name} etkisi uzun vadeli disiplin başlığını güçlendirir.`
+      title: "Kariyer ve Yapılanma",
+      text: `MC ${data.byKey.mc.sign.name} olduğu için görünür alanda ${data.byKey.mc.sign.focus.toLowerCase()} başlığı ağır basar. Satürn ${data.byKey.saturn.sign.name} yerleşimi ise bu alanlarda sabır, zamanlama ve yapısal disiplin getirir.`
     }
-  ].map((item) => `
+  ];
+
+  analysisGrid.innerHTML = cards.map((card) => `
     <article class="analysis-card">
-      <h3>${item.title}</h3>
-      <p>${item.text}</p>
-      ${item.extra || ""}
+      <h3>${card.title}</h3>
+      <p>${card.text}</p>
     </article>
   `).join("");
 }
 
-function isFutureDate(dateValue) {
+function renderPlacementsTable(data) {
+  placementsTableBody.innerHTML = data.placements.map((placement) => `
+    <tr>
+      <td>${placement.label}</td>
+      <td>${placement.sign.symbol} ${placement.sign.name} • ${placement.degreeLabel}</td>
+      <td>${placement.house}. Ev</td>
+    </tr>
+  `).join("");
+}
+
+function renderAspects(data) {
+  if (!data.aspects.length) {
+    aspectList.innerHTML = `
+      <article class="aspect-item">
+        <strong>Öne çıkan ana açı bulunamadı</strong>
+        <span>Bu haritada yorum ağırlığı daha çok burç yerleşimlerine ve açısal dağılıma yaslanıyor.</span>
+      </article>
+    `;
+    return;
+  }
+
+  aspectList.innerHTML = data.aspects.map((entry) => `
+    <article class="aspect-item">
+      <strong>${entry.first.label} ${entry.aspect.label} ${entry.second.label}</strong>
+      <span>Orb: ${entry.orb.toFixed(2)}° • ${entry.aspect.tone}</span>
+    </article>
+  `).join("");
+}
+
+function renderResults(data) {
+  const timeText = data.time ? `${data.time} • saat doğrulandı` : "Saat belirtilmedi • yükselen tahmini";
+  const coordinates = `${data.city.latitude.toFixed(4)}, ${data.city.longitude.toFixed(4)}`;
+
+  resultTitle.textContent = `${data.city.displayName} için yıldız haritan hazır`;
+  resultSubtitle.textContent = `${coordinates} • ${timeText} • ${data.source}`;
+  accuracyBadge.textContent = data.accuracy;
+  sourceBadge.textContent = data.missingTime ? "Whole Sign / tahmini açılar" : "Astronomy Engine / Whole Sign";
+  chartWheel.innerHTML = createWheelSvg(data);
+  renderHighlights(data);
+  renderSummary(data);
+  renderAnalysis(data);
+  renderPlacementsTable(data);
+  renderAspects(data);
+}
+
+function setFieldError(input, message) {
+  input.setCustomValidity(message);
+  input.reportValidity();
+  input.setCustomValidity("");
+}
+
+function validateInputs(dateValue, city) {
+  if (!dateValue) {
+    setFieldError(birthDateInput, "Doğum tarihi gerekli.");
+    return false;
+  }
+
+  if (!city) {
+    setFieldError(birthPlaceInput, "Listeden geçerli bir il seç.");
+    return false;
+  }
+
   const selectedDate = new Date(`${dateValue}T00:00:00`);
   const today = new Date();
   today.setHours(23, 59, 59, 999);
 
-  return selectedDate > today;
+  if (selectedDate > today) {
+    setFieldError(birthDateInput, "Doğum tarihi gelecekte olamaz.");
+    return false;
+  }
+
+  return true;
 }
 
-chartForm.addEventListener("submit", (event) => {
+function handleSubmit(event) {
   event.preventDefault();
 
-  const date = document.querySelector("#birthDate").value;
-  const time = document.querySelector("#birthTime").value;
-  const place = document.querySelector("#birthPlace").value.trim();
-
-  if (!date || !place) {
+  if (!astro) {
+    formNote.textContent = "Astronomi motoru yüklenemedi. Sayfayı yenileyip tekrar dene.";
     return;
   }
 
-  if (isFutureDate(date)) {
-    document.querySelector("#birthDate").setCustomValidity("Doğum tarihi gelecekte olamaz.");
-    chartForm.reportValidity();
-    document.querySelector("#birthDate").setCustomValidity("");
+  const date = birthDateInput.value;
+  const time = birthTimeInput.value;
+  const city = findCity(birthPlaceInput.value.trim());
+
+  if (!validateInputs(date, city)) {
     return;
   }
 
-  loadingCard.hidden = false;
-  chartResults.hidden = true;
+  startLoading();
 
   window.setTimeout(() => {
-    const data = buildChartData({ date, time, place });
-    renderResults(data);
-    loadingCard.hidden = true;
+    const chartData = buildChartData({ date, time, city });
+    renderResults(chartData);
+    stopLoading();
     chartResults.hidden = false;
     chartResults.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 850);
-});
+  }, 900);
+}
+
+populateCityList();
+setMaxBirthDate();
+updateCityPreview();
+
+birthPlaceInput.addEventListener("input", updateCityPreview);
+birthPlaceInput.addEventListener("change", updateCityPreview);
+chartForm.addEventListener("submit", handleSubmit);
